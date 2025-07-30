@@ -17,10 +17,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-        }
-        #username-display {
-            font-weight: 500;
-            color: var(--dark-blue);
+            position: relative; /* เพิ่ม position relative สำหรับ dropdown */
         }
         .subjects-grid {
             display: grid;
@@ -43,10 +40,23 @@
     <div class="main-container">
         <header class="page-header">
             <h2>เลือกวิชาที่ต้องการหาเฉลย</h2>
+            <!-- --- เปลี่ยนโครงสร้างส่วนผู้ใช้ทั้งหมด --- -->
             <div class="user-actions">
-                <span id="username-display"></span>
-                <button id="logout-btn" class="btn btn-secondary">ออกจากระบบ</button>
+                <div id="user-profile-container" class="user-profile-container">
+                    <img id="profile-picture" class="profile-picture" src="https://via.placeholder.com/40" alt="User Profile">
+                    <span id="username-display" class="username-display"></span>
+                    
+                    <div id="user-dropdown" class="user-dropdown">
+                        <div class="dropdown-header">
+                            <strong id="dropdown-username"></strong>
+                            <span id="dropdown-role" class="role-badge"></span>
+                        </div>
+                        <div id="admin-link-placeholder" class="dropdown-item"></div>
+                        <a href="#" id="logout-btn" class="dropdown-item danger">ออกจากระบบ</a>
+                    </div>
+                </div>
             </div>
+            <!-- --- จบส่วนที่เปลี่ยน --- -->
         </header>
 
         <div class="subjects-grid" id="subjects-grid">

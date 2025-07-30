@@ -1,36 +1,94 @@
 import { API_BASE_URL } from './config.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    // --- User/Logout section ---
+// --- ฟังก์ชันจัดการ User Profile และ Dropdown ---
+function setupUserActions() {
+    const profileContainer = document.getElementById('user-profile-container');
+    if (!profileContainer) return; // ถ้าไม่มีส่วนนี้ในหน้า ก็ไม่ต้องทำอะไร
+
+    const profilePicture = document.getElementById('profile-picture');
     const usernameDisplay = document.getElementById('username-display');
+    const dropdownMenu = document.getElementById('user-dropdown');
+    const dropdownUsername = document.getElementById('dropdown-username');
+    const dropdownRole = document.getElementById('dropdown-role');
+    const adminLinkPlaceholder = document.getElementById('admin-link-placeholder');
     const logoutBtn = document.getElementById('logout-btn');
 
-    if (usernameDisplay) {
-        const username = localStorage.getItem('username');
-        if (username) {
-            usernameDisplay.textContent = `ผู้ใช้: ${username}`;
+    const token = localStorage.getItem('access_token');
+    const role = localStorage.getItem('user_role');
+    const username = localStorage.getItem('username');
+    const pictureUrl = localStorage.getItem('picture_url');
+
+    // ถ้าไม่มี token แต่พยายามเข้าหน้าที่มี user profile ให้เด้งกลับไปหน้า login
+    if (!token) {
+        window.location.href = 'index.html';
+        return;
+    }
+
+    // ตั้งค่าการแสดงผล
+    usernameDisplay.textContent = username;
+    dropdownUsername.textContent = username;
+    dropdownRole.textContent = role;
+    if (pictureUrl) {
+        profilePicture.src = pictureUrl;
+    } else {
+        // รูป default กรณีไม่มีรูป (เช่น login ด้วย username/password)
+        profilePicture.src = `https://ui-avatars.com/api/?name=${username}&background=0D8ABC&color=fff`;
+    }
+
+    // แสดงปุ่ม "จัดการระบบ" สำหรับ Admin/Moderator
+    if (role === 'admin' || role === 'moderator') {
+        const adminLink = document.createElement('a');
+        adminLink.textContent = 'จัดการระบบ';
+        adminLink.className = 'dropdown-item';
+        adminLink.href = (role === 'admin') ? 'admin-dashboard.html' : 'moderator-dashboard.html';
+        adminLinkPlaceholder.appendChild(adminLink);
+    }
+
+    // Logic การทำงานของ Dropdown
+    profileContainer.addEventListener('click', (event) => {
+        event.stopPropagation(); // ป้องกันการปิดเมนูทันทีเมื่อคลิกเปิด
+        dropdownMenu.classList.toggle('show');
+    });
+
+    // ปิดเมนูเมื่อคลิกที่อื่น
+    window.addEventListener('click', (event) => {
+        if (!profileContainer.contains(event.target)) {
+            dropdownMenu.classList.remove('show');
         }
-    }
+    });
 
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            localStorage.clear();
-            window.location.href = 'index.html';
-        });
-    }
+    // ปุ่มออกจากระบบ
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.clear();
+        window.location.href = 'index.html';
+    });
+}
 
+document.addEventListener('DOMContentLoaded', () => {
     const pathname = window.location.pathname.split('/').pop();
 
-    if (pathname === 'subjects.html' || pathname === '' || pathname.includes('index.html')) {
-        const token = localStorage.getItem('access_token');
-        if (!token && (pathname === 'subjects.html')) {
-             window.location.href = 'index.html';
-             return;
-        }
-        if(token && (pathname === '' || pathname.includes('index.html'))){
-            window.location.href = 'subjects.html';
+    // ตรวจสอบว่าควรจะแสดงหน้า login หรือหน้า subjects
+    const token = localStorage.getItem('access_token');
+    if (token && (pathname === 'index.html' || pathname === '' || pathname === '/')) {
+        window.location.href = 'subjects.html';
+        return;
+    }
+    if (!token && pathname !== 'index.html' && pathname !== '' && pathname !== '/') {
+         // อนุญาตให้เข้าหน้า admin-login ได้โดยไม่ต้องมี token
+        if(pathname !== 'admin-login.html') {
+            window.location.href = 'index.html';
             return;
         }
+    }
+
+    // เรียกใช้ฟังก์ชันจัดการ user profile ในทุกหน้าที่ควรจะมี
+    if (document.getElementById('user-profile-container')) {
+        setupUserActions();
+    }
+
+    // Logic การแสดงผลตามแต่ละหน้า
+    if (pathname === 'subjects.html') {
         renderSubjectsPage();
     } else if (pathname === 'solutions.html') {
         renderSolutionsPage();

@@ -20,6 +20,7 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 else:
+    # ระบุ path ของ database.db ให้อยู่ในโฟลเดอร์ backend
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'uploads')
@@ -39,13 +40,22 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
     role = db.Column(db.String(20), nullable=False, default='user')
+    picture_url = db.Column(db.String(255), nullable=True)
+    
     solutions = db.relationship('Solution', backref='creator', lazy=True)
     login_history = db.relationship('LoginHistory', backref='user', lazy=True)
     activity_logs = db.relationship('ActivityLog', backref='user', lazy=True)
 
     def set_password(self, pw): self.password_hash = generate_password_hash(pw)
     def check_password(self, pw): return check_password_hash(self.password_hash, pw)
-    def to_dict(self): return {"id": self.id, "username": self.username, "role": self.role}
+    
+    def to_dict(self): 
+        return {
+            "id": self.id, 
+            "username": self.username, 
+            "role": self.role,
+            "picture_url": self.picture_url
+        }
 
 class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -146,7 +156,6 @@ def login():
     if not data or not data.get('username') or not data.get('password'): return jsonify({"message": "Missing credentials"}), 400
     user = User.query.filter_by(username=data.get('username')).first()
     if user and user.check_password(data.get('password')):
-        # Log login history
         login_log = LoginHistory(
             user_id=user.id, ip_address=request.remote_addr, 
             user_agent=request.headers.get('User-Agent', 'Unknown')
@@ -168,22 +177,30 @@ def google_login():
     try:
         idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), app.config['GOOGLE_CLIENT_ID'])
 
-        # --- เพิ่มส่วนตรวจสอบอีเมล ---
         email = idinfo.get('email')
         if not email or not email.endswith('@rmutsvmail.com'):
             return jsonify({"message": "การเข้าสู่ระบบจำกัดเฉพาะอีเมล @rmutsvmail.com เท่านั้น"}), 403
-        # --- จบส่วนตรวจสอบ ---
 
         username = email.split('@')[0]
+        picture_url = idinfo.get('picture')
+        
         user = User.query.filter_by(username=username).first()
 
         if not user:
-            new_user = User(username=username, role='user')
+            new_user = User(
+                username=username, 
+                role='user', 
+                picture_url=picture_url
+            )
             new_user.set_password(os.urandom(16).hex())
             db.session.add(new_user)
             db.session.commit()
             user = new_user
             log_activity(user, f"สร้างบัญชีใหม่และเข้าสู่ระบบผ่าน Google")
+        else:
+            user.picture_url = picture_url
+            db.session.commit()
+
 
         login_log = LoginHistory(
             user_id=user.id,
@@ -332,6 +349,6 @@ def setup_database(app):
             db.session.commit(); 
             print("Admin and Moderator users created.")
 
-setup_database(app)
 if __name__ == '__main__':
+    setup_database(app)
     app.run(debug=True)

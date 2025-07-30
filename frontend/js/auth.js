@@ -5,10 +5,12 @@ async function handleSuccessfulLogin(data) {
     localStorage.setItem('access_token', data.access_token);
     localStorage.setItem('user_role', data.user.role);
     localStorage.setItem('username', data.user.username);
+    // --- เพิ่มการบันทึก URL รูปภาพ ---
+    localStorage.setItem('picture_url', data.user.picture_url || '');
+
 
     const welcomeMessage = `ยินดีต้อนรับคุณ ${data.user.username}`;
     
-    // ปิด Swal loading (ถ้ามี) ก่อนแสดงข้อความ success
     Swal.close();
 
     await Swal.fire({
@@ -36,13 +38,7 @@ function handleLoginError(error) {
 }
 
 function redirectToDashboard(role) {
-    if (role === 'admin') {
-        window.location.href = 'admin-dashboard.html';
-    } else if (role === 'moderator') {
-        window.location.href = 'moderator-dashboard.html';
-    } else {
-        window.location.href = 'subjects.html';
-    }
+    window.location.href = 'subjects.html';
 }
 
 
@@ -74,11 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
                 }
                 
-                // ใช้ฟังก์ชันที่สร้างไว้
                 await handleSuccessfulLogin(data);
 
             } catch (error) {
-                // ใช้ฟังก์ชันที่สร้างไว้
                  handleLoginError(error);
                  loginButton.disabled = false;
                  loginButton.textContent = 'เข้าสู่ระบบ';
@@ -88,9 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Listener สำหรับ Google Sign-In
     document.addEventListener('google-signin-success', async (event) => {
-        const id_token = event.detail; // รับ id_token จาก event
+        const id_token = event.detail;
 
-        // แสดงสถานะกำลังโหลด
         Swal.fire({
             title: 'กำลังเข้าสู่ระบบผ่าน Google...',
             didOpen: () => {
@@ -101,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         try {
-            // ส่ง token ไปยัง Backend ของเรา
             const response = await fetch(`${API_BASE_URL}/api/login/google`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -114,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(data.message || 'เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google');
             }
 
-            // ถ้าสำเร็จ ให้ใช้ฟังก์ชัน handleSuccessfulLogin
             await handleSuccessfulLogin(data);
 
         } catch (error) {

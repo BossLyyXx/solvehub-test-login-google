@@ -111,6 +111,99 @@ a, button, input, select, .card, .subject-box, .solution-card {
     color: var(--dark-blue);
 }
 
+/* --- CSS สำหรับ User Profile Dropdown (ส่วนที่เพิ่มใหม่) --- */
+.user-actions {
+    position: relative; /* สำคัญสำหรับ Dropdown */
+}
+
+.user-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50px; /* ทำให้พื้นหลังเป็นแคปซูล */
+    transition: background-color 0.2s ease;
+}
+
+.user-profile-container:hover {
+    background-color: var(--light-blue-bg);
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* ทำให้รูปเป็นวงกลม */
+    object-fit: cover; /* ป้องกันรูปบิดเบี้ยว */
+    border: 2px solid var(--border-color);
+}
+
+.username-display {
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.user-dropdown {
+    display: none; /* ซ่อนเมนูไว้เป็นค่าเริ่มต้น */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    min-width: 220px;
+    z-index: 100;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.user-dropdown.show {
+    display: block; /* แสดงเมนูเมื่อมี class 'show' */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+.dropdown-header strong {
+    display: block;
+    color: var(--text-dark);
+}
+.role-badge {
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--light-blue-bg);
+    color: var(--dark-blue);
+    text-transform: capitalize;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.dropdown-item:hover {
+    background-color: var(--light-blue-bg);
+}
+.dropdown-item.danger {
+    color: var(--danger-color);
+}
+.dropdown-item.danger:hover {
+    background-color: #fbebeb;
+}
+
+
 /* --- Dark Mode --- */
 body.dark-mode {
     --bg-color: #121212;
@@ -123,6 +216,22 @@ body.dark-mode {
     --border-color: #333333;
     --card-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
 }
+
+/* Dark mode for dropdown */
+body.dark-mode .user-profile-container:hover {
+    background-color: #2f2f2f;
+}
+body.dark-mode .dropdown-item:hover {
+    background-color: #2f2f2f;
+}
+body.dark-mode .dropdown-item.danger:hover {
+    background-color: #4d2323;
+}
+body.dark-mode .role-badge {
+    background-color: #333;
+    color: #ccc;
+}
+
 
 /* Smooth color transition for all elements */
 body, .card, .modal-content, .sidebar, .btn, input, select, table, th, td {
