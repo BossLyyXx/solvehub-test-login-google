@@ -27,7 +27,7 @@ app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 # --- Google OAuth Configuration ---
-app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID', 'YOUR_GOOGLE_CLIENT_ID_HERE')
+app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID', '688643244558-vrrv0t3iut0iahp5ssgbna11f7vc139t.apps.googleusercontent.com')
 
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
