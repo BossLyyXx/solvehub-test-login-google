@@ -39,6 +39,7 @@
 .admin-content {
     flex-grow: 1;
     padding: 2rem 3rem;
+    background-color: var(--bg-color); /* เพิ่มสีพื้นหลังให้ admin content */
 }
 .admin-header {
     display: flex;
@@ -204,51 +205,45 @@ tbody tr:hover {
     margin-left: auto;
     margin-right: auto;
 }
-/* --- CSS สำหรับมือถือ (Responsive Design) --- */
-@media (max-width: 800px) {
 
-    /* เปลี่ยน layout หลักให้เรียงจากบนลงล่าง */
+/* --- ส่วนที่เพิ่มเข้ามา: Responsive Design สำหรับหน้า Admin --- */
+@media (max-width: 900px) {
     .admin-layout {
         flex-direction: column;
     }
 
-    /* ปรับขนาด sidebar ให้เต็มความกว้างแนวนอน */
     .sidebar {
         width: 100%;
-        height: auto; /* ให้ความสูงปรับตามเนื้อหา */
+        height: auto;
         min-height: 0;
-        flex-direction: row; /* จัดเรียงโลโก้กับเมนูแนวนอน */
+        flex-direction: row;
         justify-content: space-between;
         align-items: center;
         padding: 1rem 1.5rem;
+        position: sticky; /* ทำให้เมนูบนสุดติดจอเมื่อเลื่อน */
+        top: 0;
+        z-index: 100;
     }
 
     .sidebar .logo {
-        margin-bottom: 0; /* เอา margin ด้านล่างออก */
+        margin-bottom: 0;
     }
 
-    /* ซ่อนเมนูหลักไว้ก่อน */
-    .sidebar nav {
+    /* ซ่อนเมนูและปุ่ม Logout ใน Sidebar ปกติ */
+    .sidebar nav, .sidebar-footer {
         display: none;
     }
 
-    /* ซ่อนปุ่มออกจากระบบใน sidebar */
-    .sidebar-footer {
-        display: none;
-    }
-
-    /* ปรับระยะห่างของ content หลัก */
     .admin-content {
         padding: 1.5rem;
     }
-
-    /* ทำให้ตารางที่ข้อมูลยาวเกินไปสามารถเลื่อนซ้าย-ขวาได้ */
-    .content-table {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch; /* ทำให้เลื่อนลื่นบน iOS */
+    
+    .admin-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
     }
 
-    /* ลดขนาดตัวอักษรและปุ่มใน Header ของ content */
     .admin-header h2 {
         font-size: 1.25rem;
     }
@@ -256,5 +251,19 @@ tbody tr:hover {
     .header-actions .btn {
         padding: 0.5rem 0.75rem;
         font-size: 0.9rem;
+    }
+    
+    /* ทำให้ตารางเลื่อนซ้าย-ขวาได้ */
+    .content-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    table {
+        min-width: 600px; /* กำหนดความกว้างขั้นต่ำให้ตาราง */
+    }
+    
+    .modal-content {
+        padding: 1.5rem;
     }
 }

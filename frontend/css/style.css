@@ -367,7 +367,6 @@ a, button, input, select, .card, .subject-box, .solution-card {
 
 .dream-companies {
     text-align: center;
-    /* --- เอา margin-top: auto ออกเพื่อให้ตำแหน่งต่อจาก tech-stack --- */
     padding-top: 1.5rem;
     border-top: 1px solid var(--border-color);
 }
@@ -392,20 +391,8 @@ a, button, input, select, .card, .subject-box, .solution-card {
     object-fit: contain;
 }
 
-/* --- เพิ่ม CSS เพื่อปรับขนาดโลโก้ OpenAI --- */
 .company-logos img[alt="OpenAI Logo"] {
-    height: 35px; /* ปรับขนาดเพื่อให้สมดุลกับโลโก้ Google */
-}
-
-
-@media (max-width: 768px) {
-    .modal-body-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    .dream-companies {
-        margin-top: 1.5rem;
-    }
+    height: 35px;
 }
 
 
@@ -443,4 +430,59 @@ body.dark-mode .contact-email i {
 /* Smooth color transition for all elements */
 body, .card, .modal-content, .sidebar, .btn, input, select, table, th, td {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --- ส่วนที่เพิ่มเข้ามา: Responsive Design --- */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 1rem;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .page-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .subjects-grid {
+        grid-template-columns: 1fr 1fr; /* แสดง 2 คอลัมน์บนจอแท็บเล็ต */
+        gap: 1rem;
+    }
+    
+    .subject-box {
+        padding: 1.5rem;
+    }
+
+    /* About Dev Modal Responsive */
+    .modal-body-grid {
+        grid-template-columns: 1fr; /* เปลี่ยนเป็น 1 คอลัมน์ */
+        gap: 1rem;
+    }
+    .dream-companies {
+        margin-top: 1.5rem;
+    }
+    .modal-content {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .subjects-grid {
+        grid-template-columns: 1fr; /* แสดง 1 คอลัมน์บนจอมือถือ */
+    }
+    .user-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .username-display {
+        display: none; /* ซ่อนชื่อผู้ใช้บนจอมือถือเล็กๆ เพื่อประหยัดพื้นที่ */
+    }
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
 }
