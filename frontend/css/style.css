@@ -111,9 +111,9 @@ a, button, input, select, .card, .subject-box, .solution-card {
     color: var(--dark-blue);
 }
 
-/* --- CSS สำหรับ User Profile Dropdown (ส่วนที่เพิ่มใหม่) --- */
+/* --- CSS สำหรับ User Profile Dropdown --- */
 .user-actions {
-    position: relative; /* สำคัญสำหรับ Dropdown */
+    position: relative;
 }
 
 .user-profile-container {
@@ -122,7 +122,7 @@ a, button, input, select, .card, .subject-box, .solution-card {
     gap: 0.75rem;
     cursor: pointer;
     padding: 5px;
-    border-radius: 50px; /* ทำให้พื้นหลังเป็นแคปซูล */
+    border-radius: 50px;
     transition: background-color 0.2s ease;
 }
 
@@ -133,8 +133,8 @@ a, button, input, select, .card, .subject-box, .solution-card {
 .profile-picture {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* ทำให้รูปเป็นวงกลม */
-    object-fit: cover; /* ป้องกันรูปบิดเบี้ยว */
+    border-radius: 50%;
+    object-fit: cover;
     border: 2px solid var(--border-color);
 }
 
@@ -144,7 +144,7 @@ a, button, input, select, .card, .subject-box, .solution-card {
 }
 
 .user-dropdown {
-    display: none; /* ซ่อนเมนูไว้เป็นค่าเริ่มต้น */
+    display: none;
     position: absolute;
     top: 100%;
     right: 0;
@@ -160,7 +160,7 @@ a, button, input, select, .card, .subject-box, .solution-card {
 }
 
 .user-dropdown.show {
-    display: block; /* แสดงเมนูเมื่อมี class 'show' */
+    display: block;
 }
 
 @keyframes fadeIn {
@@ -203,6 +203,211 @@ a, button, input, select, .card, .subject-box, .solution-card {
     background-color: #fbebeb;
 }
 
+/* --- CSS สำหรับ About Dev Modal --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.modal-overlay.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 800px; 
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    line-height: 1;
+}
+.close-modal-btn:hover {
+    color: var(--text-dark);
+}
+
+.modal-body-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.modal-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.dev-profile {
+    text-align: center;
+}
+
+.dev-picture {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-blue);
+    margin-bottom: 1rem;
+    object-fit: cover;
+}
+
+.dev-profile h2 {
+    margin: 0 0 0.25rem 0;
+}
+
+.dev-title {
+    color: var(--text-secondary);
+    margin: 0 0 1rem 0;
+}
+
+.dev-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.contact-email {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin: 0;
+    word-break: break-all;
+}
+
+.contact-email i {
+    margin-right: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.social-logos {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.social-logos a {
+    display: inline-block;
+    line-height: 0;
+}
+
+.social-logos img {
+    height: 30px;
+    transition: transform 0.2s ease;
+}
+
+.social-logos img:hover {
+    transform: scale(1.1);
+}
+
+.dev-details, .tech-stack {
+    margin-bottom: 1.5rem;
+}
+
+.dev-details h3, .tech-stack h3 {
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+}
+.dev-details h3 i, .tech-stack h3 i {
+    margin-right: 0.5rem;
+    color: var(--primary-blue);
+    width: 20px;
+    text-align: center;
+}
+
+.dev-details p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.tech-stack ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.tech-stack li {
+    background-color: var(--light-blue-bg);
+    padding: 0.75rem;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.dream-companies {
+    text-align: center;
+    /* --- เอา margin-top: auto ออกเพื่อให้ตำแหน่งต่อจาก tech-stack --- */
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.dream-companies h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.company-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+.company-logos img {
+    height: 40px;
+    max-width: 120px;
+    object-fit: contain;
+}
+
+/* --- เพิ่ม CSS เพื่อปรับขนาดโลโก้ OpenAI --- */
+.company-logos img[alt="OpenAI Logo"] {
+    height: 35px; /* ปรับขนาดเพื่อให้สมดุลกับโลโก้ Google */
+}
+
+
+@media (max-width: 768px) {
+    .modal-body-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .dream-companies {
+        margin-top: 1.5rem;
+    }
+}
+
 
 /* --- Dark Mode --- */
 body.dark-mode {
@@ -217,19 +422,21 @@ body.dark-mode {
     --card-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Dark mode for dropdown */
-body.dark-mode .user-profile-container:hover {
-    background-color: #2f2f2f;
+/* Dark mode for dropdown & modal */
+body.dark-mode .user-profile-container:hover { background-color: #2f2f2f; }
+body.dark-mode .dropdown-item:hover { background-color: #2f2f2f; }
+body.dark-mode .dropdown-item.danger:hover { background-color: #4d2323; }
+body.dark-mode .role-badge { background-color: #333; color: #ccc; }
+body.dark-mode .tech-stack li { background-color: #2a2a2a; }
+body.dark-mode .dev-details h3 { color: var(--text-dark); }
+body.dark-mode .company-logos img {
+    filter: invert(1) grayscale(1) brightness(2);
 }
-body.dark-mode .dropdown-item:hover {
-    background-color: #2f2f2f;
+body.dark-mode .contact-email {
+    color: var(--text-dark);
 }
-body.dark-mode .dropdown-item.danger:hover {
-    background-color: #4d2323;
-}
-body.dark-mode .role-badge {
-    background-color: #333;
-    color: #ccc;
+body.dark-mode .contact-email i {
+    color: var(--text-secondary);
 }
 
 

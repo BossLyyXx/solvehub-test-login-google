@@ -6,6 +6,7 @@
     <title>เลือกวิชา - SolveHub</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="icon" type="image/x-icon" href="../DekAi.ico?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .page-header {
             display: flex;
@@ -17,7 +18,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            position: relative; /* เพิ่ม position relative สำหรับ dropdown */
+            position: relative;
         }
         .subjects-grid {
             display: grid;
@@ -40,8 +41,9 @@
     <div class="main-container">
         <header class="page-header">
             <h2>เลือกวิชาที่ต้องการหาเฉลย</h2>
-            <!-- --- เปลี่ยนโครงสร้างส่วนผู้ใช้ทั้งหมด --- -->
             <div class="user-actions">
+                <button id="about-dev-btn" class="btn btn-secondary">About Dev</button>
+                
                 <div id="user-profile-container" class="user-profile-container">
                     <img id="profile-picture" class="profile-picture" src="https://via.placeholder.com/40" alt="User Profile">
                     <span id="username-display" class="username-display"></span>
@@ -56,11 +58,63 @@
                     </div>
                 </div>
             </div>
-            <!-- --- จบส่วนที่เปลี่ยน --- -->
         </header>
 
         <div class="subjects-grid" id="subjects-grid">
+        </div>
+    </div>
+
+    <div id="about-dev-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal-btn">×</span>
+            
+            <div class="modal-body-grid">
+                <div class="modal-column">
+                    <div class="dev-profile">
+                        <img src="https://lh3.googleusercontent.com/a/ACg8ocJq1QYbGUvN7pIkvl51TJhGZ5-YZi4u6WhWATXSVia4seiRsZ8=s288-c-no" alt="Developer Profile" class="dev-picture">
+                        <h2>BossLyxx!!!</h2>
+                        <p class="dev-title">BossLyxx!!! / Full-Stack Developer</p>
+                        <div class="dev-contact">
+                            <p class="contact-email"><i class="fas fa-envelope"></i> palakon.k@rmutsvmail.com</p>
+                            <div class="social-logos">
+                                <a href="https://www.instagram.com/bosslyxx_2006" target="_blank" title="Instagram">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo">
+                                </a>
+                                <a href="https://www.facebook.com/asf.gta" target="_blank" title="Facebook">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dev-details">
+                        <h3><i class="fas fa-graduation-cap"></i> การศึกษาและเป้าหมาย</h3>
+                        <p><strong>สถาบัน:</strong> มหาวิทยาลัยเทคโนโลยีราชมงคลศรีวิชัย</p>
+                        <p><strong>สาขา:</strong> Artificial Intelligence Engineering and Digital Innovation</p>
+                        <p><strong>เป้าหมายในอาชีพ:</strong> Prompt Engineer หรือสายงานด้าน AI</p>
+                    </div>
+                </div>
+
+                <div class="modal-column">
+                    <div class="tech-stack">
+                        <h3><i class="fas fa-cogs"></i> เทคโนโลยีที่ใช้</h3>
+                        <ul>
+                            <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                            <li><strong>Backend:</strong> Python (Flask)</li>
+                            <li><strong>Database:</strong> SQLite & PostgreSQL</li>
+                            <li><strong>Authentication:</strong> JWT, Google OAuth 2.0</li>
+                            <li><strong>Deployment:</strong> Render, Vercel</li>
+                        </ul>
+                    </div>
+                    <div class="dream-companies">
+                        <h4>สนใจร่วมงานกับ</h4>
+                        <div class="company-logos">
+                            <img src="https://www.logoai.com/uploads/output/2025/02/18/cf5aad2ea768c507ce41a12495885c9a.jpg" alt="OpenAI Logo">
+                            <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo">
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
     </div>
 
     <script type="module" src="js/app.js"></script>

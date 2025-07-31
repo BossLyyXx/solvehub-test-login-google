@@ -3,7 +3,7 @@ import { API_BASE_URL } from './config.js';
 // --- ฟังก์ชันจัดการ User Profile และ Dropdown ---
 function setupUserActions() {
     const profileContainer = document.getElementById('user-profile-container');
-    if (!profileContainer) return; // ถ้าไม่มีส่วนนี้ในหน้า ก็ไม่ต้องทำอะไร
+    if (!profileContainer) return;
 
     const profilePicture = document.getElementById('profile-picture');
     const usernameDisplay = document.getElementById('username-display');
@@ -18,24 +18,20 @@ function setupUserActions() {
     const username = localStorage.getItem('username');
     const pictureUrl = localStorage.getItem('picture_url');
 
-    // ถ้าไม่มี token แต่พยายามเข้าหน้าที่มี user profile ให้เด้งกลับไปหน้า login
     if (!token) {
         window.location.href = 'index.html';
         return;
     }
 
-    // ตั้งค่าการแสดงผล
     usernameDisplay.textContent = username;
     dropdownUsername.textContent = username;
     dropdownRole.textContent = role;
     if (pictureUrl) {
         profilePicture.src = pictureUrl;
     } else {
-        // รูป default กรณีไม่มีรูป (เช่น login ด้วย username/password)
         profilePicture.src = `https://ui-avatars.com/api/?name=${username}&background=0D8ABC&color=fff`;
     }
 
-    // แสดงปุ่ม "จัดการระบบ" สำหรับ Admin/Moderator
     if (role === 'admin' || role === 'moderator') {
         const adminLink = document.createElement('a');
         adminLink.textContent = 'จัดการระบบ';
@@ -44,20 +40,17 @@ function setupUserActions() {
         adminLinkPlaceholder.appendChild(adminLink);
     }
 
-    // Logic การทำงานของ Dropdown
     profileContainer.addEventListener('click', (event) => {
-        event.stopPropagation(); // ป้องกันการปิดเมนูทันทีเมื่อคลิกเปิด
+        event.stopPropagation();
         dropdownMenu.classList.toggle('show');
     });
 
-    // ปิดเมนูเมื่อคลิกที่อื่น
     window.addEventListener('click', (event) => {
         if (!profileContainer.contains(event.target)) {
             dropdownMenu.classList.remove('show');
         }
     });
 
-    // ปุ่มออกจากระบบ
     logoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.clear();
@@ -65,27 +58,51 @@ function setupUserActions() {
     });
 }
 
+// --- ฟังก์ชันจัดการ About Dev Modal ---
+function setupAboutDevModal() {
+    const aboutBtn = document.getElementById('about-dev-btn');
+    const aboutModal = document.getElementById('about-dev-modal');
+    const closeModalBtn = document.querySelector('.close-modal-btn');
+
+    if (!aboutBtn || !aboutModal || !closeModalBtn) return;
+
+    aboutBtn.addEventListener('click', () => {
+        aboutModal.classList.add('show');
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        aboutModal.classList.remove('show');
+    });
+
+    aboutModal.addEventListener('click', (event) => {
+        if (event.target === aboutModal) {
+            aboutModal.classList.remove('show');
+        }
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const pathname = window.location.pathname.split('/').pop();
-
-    // ตรวจสอบว่าควรจะแสดงหน้า login หรือหน้า subjects
     const token = localStorage.getItem('access_token');
+
     if (token && (pathname === 'index.html' || pathname === '' || pathname === '/')) {
         window.location.href = 'subjects.html';
         return;
     }
     if (!token && pathname !== 'index.html' && pathname !== '' && pathname !== '/') {
-         // อนุญาตให้เข้าหน้า admin-login ได้โดยไม่ต้องมี token
         if(pathname !== 'admin-login.html') {
             window.location.href = 'index.html';
             return;
         }
     }
 
-    // เรียกใช้ฟังก์ชันจัดการ user profile ในทุกหน้าที่ควรจะมี
     if (document.getElementById('user-profile-container')) {
         setupUserActions();
     }
+    
+    // --- เรียกใช้ฟังก์ชัน Modal ---
+    setupAboutDevModal();
 
     // Logic การแสดงผลตามแต่ละหน้า
     if (pathname === 'subjects.html') {

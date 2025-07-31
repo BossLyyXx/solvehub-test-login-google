@@ -341,7 +341,8 @@ def get_activity_logs(current_user):
 def setup_database(app):
     with app.app_context():
         db.create_all()
-        if not User.query.first(): 
+        # เช็คว่ามี user admin หรือยัง ถ้ายังไม่มีให้สร้าง
+        if not User.query.filter_by(username='admin').first(): 
             print("Creating initial users...")
             admin_user=User(username='admin', role='admin'); admin_user.set_password('admin123')
             mod_user=User(username='moderator', role='moderator'); mod_user.set_password('mod123')
@@ -349,6 +350,10 @@ def setup_database(app):
             db.session.commit(); 
             print("Admin and Moderator users created.")
 
+# --- ย้ายการเรียกใช้ setup_database มาไว้นอก if __name__ == '__main__': ---
+# เพื่อให้ Gunicorn บน Render สามารถสร้างตารางได้
+setup_database(app)
+
+# บล็อกนี้จะทำงานเฉพาะเมื่อรันไฟล์โดยตรง (เช่น `python app.py`)
 if __name__ == '__main__':
-    setup_database(app)
     app.run(debug=True)
