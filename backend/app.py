@@ -15,10 +15,10 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 
 # --- ปรับปรุงการตั้งค่า CORS ให้ปลอดภัยขึ้น ---
-# อนุญาตเฉพาะ Frontend URL ของคุณเท่านั้น (ทั้งตอนพัฒนาและตอนใช้งานจริง)
+# อนุญาตเฉพาะ Frontend URL ของคุณเท่านั้น
 origins = [
-    "https://solvehub1.vercel.app",
-    "http://127.0.0.1:5500",
+    "https://solvehub1.vercel.app", # URL ของ Frontend บน Vercel
+    "http://127.0.0.1:5500",      # URL สำหรับตอนพัฒนาบนเครื่อง
     "http://localhost:5500"
 ]
 CORS(app, resources={r"/api/*": {"origins": origins}})
@@ -26,9 +26,8 @@ CORS(app, resources={r"/api/*": {"origins": origins}})
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # --- ปรับปรุง SECRET_KEY ให้ปลอดภัยขึ้น ---
-# สำคัญ: ในการใช้งานจริง ต้องตั้งค่า SECRET_KEY ใน Environment Variables ของ Render
-# ใช้ os.urandom(24).hex() เพื่อสร้างค่าเริ่มต้นที่ปลอดภัยสำหรับการทดสอบ
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'c8a2a0a2a0d9b8e1a8f0e9d8c7b6a5a4b3c2d1e0f9a8b7c6')
+# สำคัญ: ในการใช้งานจริง ต้องไปตั้งค่า SECRET_KEY ในหน้า Environment Variables ของ Render ด้วย
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'de34a2c2b8c1a6d3f2e1b4c5a6d7e8f9a0b1c2d3e4f5a6b7')
 
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
@@ -38,7 +37,8 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(basedir, 'uploads')
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
-app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID', 'YOUR_GOOGLE_CLIENT_ID_HERE')
+app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID', '688643244558-vrrv0t3iut0iahp5ssgbna11f7vc139t.apps.googleusercontent.com')
+
 
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
@@ -48,34 +48,35 @@ db = SQLAlchemy(app)
 # --- ส่วนที่เพิ่มเข้ามา: การตั้งค่า HTTP Security Headers ---
 @app.after_request
 def add_security_headers(response):
-    # Content Security Policy (CSP)
+    # Content Security Policy (CSP) - ป้องกัน XSS
+    # อนุญาตเฉพาะ resource ที่จำเป็นเท่านั้น
     csp = (
         "default-src 'self';"
-        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://apis.google.com https://accounts.google.com;"
-        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;"
-        "img-src 'self' data: https:;" # อนุญาต data: และ https: ทั้งหมดสำหรับรูปภาพ
-        "font-src 'self' https://cdnjs.cloudflare.com;"
-        "connect-src 'self' https://accounts.google.com;" # อนุญาตให้เชื่อมต่อไปยัง Google
-        "frame-src 'self' https://accounts.google.com;" # อนุญาต iframe จาก Google Sign-In
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://accounts.google.com;"
+        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;"
+        "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;"
+        "img-src 'self' data: https:;" # อนุญาต data: และรูปจาก https: ทั้งหมด
+        "connect-src 'self' https://accounts.google.com;"
+        "frame-src 'self' https://accounts.google.com;"
         "object-src 'none';"
         "base-uri 'self';"
         "form-action 'self';"
     )
-    response.headers['Content-Security-Policy'] = csp.replace("\n", "")
+    response.headers['Content-Security-Policy'] = csp.replace("\n", " ")
     
-    # Strict-Transport-Security (HSTS)
+    # HTTP Strict-Transport-Security (HSTS) - บังคับใช้ HTTPS
     response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     
-    # X-Frame-Options
+    # X-Frame-Options - ป้องกัน Clickjacking
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     
-    # X-Content-Type-Options
+    # X-Content-Type-Options - ป้องกันการเดาประเภทไฟล์ผิดพลาด
     response.headers['X-Content-Type-Options'] = 'nosniff'
     
-    # Referrer-Policy
+    # Referrer-Policy - ควบคุมการส่งข้อมูล Referrer
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
     
-    # Permissions-Policy
+    # Permissions-Policy - จำกัดการเข้าถึงฟีเจอร์ของเบราว์เซอร์
     response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
     
     return response
@@ -275,7 +276,8 @@ def get_solutions_for_subject(subject_id): return jsonify([s.to_dict_public() fo
 @app.route('/api/solutions/<int:solution_id>', methods=['GET'])
 def get_solution_detail(solution_id): return jsonify(Solution.query.get_or_404(solution_id).to_dict_detail())
 
-# ... (โค้ดส่วน Admin และ Moderator เหมือนเดิม) ...
+# --- Admin Routes ---
+# ... (โค้ดส่วน Admin และ Moderator เหมือนเดิม ไม่มีการเปลี่ยนแปลง) ...
 
 def setup_database(app):
     with app.app_context():
