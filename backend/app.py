@@ -20,6 +20,7 @@ origins = [
     "https://solvehub1.vercel.app", # URL ของ Frontend บน Vercel
     "http://127.0.0.1:5500",      # URL สำหรับตอนพัฒนาบนเครื่อง
     "http://localhost:5500"
+    "https://solvehub-test-login-google.onrender.com/api/admin/solutions"
 ]
 CORS(app, resources={r"/api/*": {"origins": origins}})
 
