@@ -50,7 +50,7 @@ def add_security_headers(response):
     csp = (
         "default-src 'self';"
         "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://accounts.google.com;"
-        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://accounts.google.com;" # <-- เพิ่มที่นี่
+        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://accounts.google.com;"
         "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;"
         "img-src 'self' data: https:;"
         "connect-src 'self' https://accounts.google.com;"
@@ -65,6 +65,8 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
     response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+    # --- แก้ไข COEP ---
+    response.headers['Cross-Origin-Embedder-Policy'] = 'unsafe-none'
     return response
 
 
