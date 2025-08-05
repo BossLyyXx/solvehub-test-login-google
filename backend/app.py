@@ -14,22 +14,19 @@ from werkzeug.utils import secure_filename
 # --- App Configuration ---
 app = Flask(__name__)
 
-# --- ปรับปรุงการตั้งค่า CORS ให้ปลอดภัยขึ้น ---
-# อนุญาตเฉพาะ Frontend URL ของคุณเท่านั้น
+# --- การตั้งค่า CORS ---
+# ตรวจสอบให้แน่ใจว่าโดเมนใหม่ของคุณอยู่ในลิสต์นี้
 origins = [
-    "https://www.solvehub.online", # โดเมนใหม่ของคุณ
-    "https://solvehub1.vercel.app", # โดเมนเก่า
-    "http://127.0.0.1:5500",      # URL สำหรับตอนพัฒนาบนเครื่อง
+    "https://www.solvehub.online",
+    "https://solvehub1.vercel.app",
+    "http://127.0.0.1:5500",
     "http://localhost:5500"
 ]
 CORS(app, resources={r"/api/*": {"origins": origins}})
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-# --- ปรับปรุง SECRET_KEY ให้ปลอดภัยขึ้น ---
-# สำคัญ: ในการใช้งานจริง ต้องไปตั้งค่า SECRET_KEY ในหน้า Environment Variables ของ Render ด้วย
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'de34a2c2b8c1a6d3f2e1b4c5a6d7e8f9a0b1c2d3e4f5a6b7')
-
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-very-secret-key-that-is-hard-to-guess')
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -44,44 +41,6 @@ app.config['GOOGLE_CLIENT_ID'] = os.environ.get('GOOGLE_CLIENT_ID', 'YOUR_GOOGLE
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 db = SQLAlchemy(app)
-
-
-# --- ส่วนที่เพิ่มเข้ามา: การตั้งค่า HTTP Security Headers ---
-@app.after_request
-def add_security_headers(response):
-    # Content Security Policy (CSP) - ป้องกัน XSS
-    # อนุญาตเฉพาะ resource ที่จำเป็นเท่านั้น
-    csp = (
-        "default-src 'self';"
-        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://accounts.google.com;"
-        "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://accounts.google.com;"
-        "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;"
-        "img-src 'self' data: https:;" # อนุญาต data: และรูปจาก https: ทั้งหมด
-        "connect-src 'self' https://accounts.google.com;"
-        "frame-src 'self' https://accounts.google.com;"
-        "object-src 'none';"
-        "base-uri 'self';"
-        "form-action 'self';"
-    )
-    response.headers['Content-Security-Policy'] = csp.replace("\n", " ")
-    
-    # HTTP Strict-Transport-Security (HSTS) - บังคับใช้ HTTPS
-    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
-    
-    # X-Frame-Options - ป้องกัน Clickjacking
-    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-    
-    # X-Content-Type-Options - ป้องกันการเดาประเภทไฟล์ผิดพลาด
-    response.headers['X-Content-Type-Options'] = 'nosniff'
-    
-    # Referrer-Policy - ควบคุมการส่งข้อมูล Referrer
-    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
-    
-    # Permissions-Policy - จำกัดการเข้าถึงฟีเจอร์ของเบราว์เซอร์
-    response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
-    
-    return response
-# --- จบส่วนที่เพิ่ม ---
 
 
 # --- Database Models ---
