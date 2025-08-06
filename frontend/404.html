@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ไม่มีสิทธิ์เข้าถึง</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .error-code {
+            font-size: 6rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 1rem;
+        }
+        
+        .error-message {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .error-description {
+            color: #999;
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+        
+        .btn-home {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-home:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">403</div>
+        <div class="error-message">ไม่มีสิทธิ์เข้าถึง</div>
+        <div class="error-description">
+            คุณไม่มีสิทธิ์เข้าถึงหน้านี้ กรุณาล็อกอินด้วยบัญชีที่มีสิทธิ์เหมาะสม
+        </div>
+        <a href="index.html" class="btn-home">กลับสู่หน้าหลัก</a>
+    </div>
+    
+    <script>
+        // เคลียร์ข้อมูลการล็อกอินที่อาจผิดพลาด
+        setTimeout(function() {
+            if (confirm('ต้องการล็อกเอาต์และกลับไปหน้าล็อกอินใหม่หรือไม่?')) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
