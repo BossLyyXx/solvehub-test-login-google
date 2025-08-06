@@ -2,6 +2,7 @@
     display: flex;
     min-height: 100vh;
 }
+
 .sidebar {
     width: 260px;
     background-color: #0d1b2a;
@@ -10,6 +11,7 @@
     display: flex;
     flex-direction: column;
 }
+
 .sidebar .logo {
     font-size: 1.5rem;
     font-weight: 700;
@@ -17,11 +19,13 @@
     text-align: center;
     margin-bottom: 2rem;
 }
+
 .sidebar nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
 .sidebar nav a {
     display: block;
     padding: 12px 15px;
@@ -30,60 +34,74 @@
     border-radius: var(--border-radius-md);
     margin-bottom: 0.5rem;
 }
+
 .sidebar nav a:hover, .sidebar nav li.active a {
     background-color: #415a77;
 }
+
 .sidebar-footer {
     margin-top: auto;
 }
+
 .admin-content {
     flex-grow: 1;
     padding: 2rem 3rem;
-    background-color: var(--bg-color); /* เพิ่มสีพื้นหลังให้ admin content */
+    background-color: var(--bg-color);
 }
+
 .admin-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
 }
+
 .header-actions {
     display: flex;
     align-items: center;
     gap: 1rem;
 }
+
 .content-table {
     background-color: var(--card-bg);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--card-shadow);
     overflow: hidden;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
 }
+
 th, td {
     padding: 1rem 1.5rem;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
 }
+
 thead {
     background-color: #f8f9fa;
 }
+
 th {
     font-weight: 600;
     color: var(--text-secondary);
 }
+
 tbody tr:last-child td {
     border-bottom: none;
 }
+
 tbody tr:hover {
     background-color: #f8f9fa;
 }
+
 .action-buttons button {
     margin-right: 0.5rem;
     padding: 5px 10px;
 }
+
 .modal {
     display: none;
     position: fixed;
@@ -95,6 +113,7 @@ tbody tr:hover {
     justify-content: center;
     align-items: center;
 }
+
 .modal-content {
     background-color: var(--card-bg);
     padding: 2rem 3rem;
@@ -105,10 +124,12 @@ tbody tr:hover {
     position: relative;
     animation: slide-down 0.3s ease-out;
 }
+
 @keyframes slide-down {
     from { transform: translateY(-50px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
+
 .close-btn {
     color: #aaa;
     position: absolute;
@@ -117,6 +138,7 @@ tbody tr:hover {
     font-weight: bold;
     cursor: pointer;
 }
+
 .close-btn:hover, .close-btn:focus { color: #000; }
 .form-group { margin-bottom: 1.5rem; }
 .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
@@ -126,6 +148,7 @@ tbody tr:hover {
     border-radius: var(--border-radius-md);
     font-size: 1rem;
 }
+
 .form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
 
 /* File Upload Area Styles */
@@ -137,14 +160,16 @@ tbody tr:hover {
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
 #file-upload-area.drag-over {
     border-color: var(--primary-blue);
     background-color: var(--light-blue-bg);
 }
+
 #file-upload-area p { margin: 1rem 0; color: var(--text-secondary); }
 #file-preview { margin-top: 1rem; font-weight: 500; }
 
-/* --- CSS สำหรับปุ่มลบ (Modal) --- */
+/* Delete Confirmation Modal */
 .delete-confirmation-modal {
     display: none;
     position: fixed;
@@ -155,6 +180,7 @@ tbody tr:hover {
     align-items: center;
     z-index: 1050;
 }
+
 .delete-confirmation-modal-content {
     background-color: var(--card-bg);
     padding: 2rem;
@@ -165,27 +191,31 @@ tbody tr:hover {
     width: 90%;
     animation: slide-down 0.3s ease-out;
 }
+
 .delete-confirmation-modal-content h3 {
     color: var(--danger-red);
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-size: 1.5rem;
 }
+
 .delete-confirmation-modal-content p {
     margin-bottom: 2rem;
     color: var(--text-secondary);
 }
+
 .delete-confirmation-modal-content .modal-actions {
     display: flex;
     gap: 1rem;
     justify-content: center;
 }
 
-/* --- CSS สำหรับ Empty State --- */
+/* Empty State */
 .empty-state-container {
     text-align: center;
     padding: 4rem 2rem;
 }
+
 .empty-state-icon {
     font-size: 4rem;
     line-height: 1;
@@ -193,11 +223,13 @@ tbody tr:hover {
     margin-bottom: 1.5rem;
     opacity: 0.7;
 }
+
 .empty-state-container h3 {
     font-size: 1.5rem;
     color: var(--dark-blue);
     margin-bottom: 0.5rem;
 }
+
 .empty-state-container p {
     color: var(--text-secondary);
     margin-bottom: 2rem;
@@ -206,42 +238,133 @@ tbody tr:hover {
     margin-right: auto;
 }
 
-/* --- ส่วนที่เพิ่มเข้ามา: Responsive Design สำหรับหน้า Admin --- */
+/* Hamburger Menu Button - ซ่อนใน PC แสดงใน Mobile */
+.menu-toggle-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+
+.menu-toggle-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #e0e1dd;
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.menu-toggle-btn.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle-btn.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle-btn.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Top Bar - แสดงเฉพาะใน Mobile */
+.admin-top-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0d1b2a;
+    color: #e0e1dd;
+    padding: 1rem 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 997;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.admin-top-bar .logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--card-bg);
+    margin: 0;
+}
+
+/* Overlay */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 998;
+    display: none;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+#overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+/* Responsive Design */
 @media (max-width: 900px) {
+    /* แสดง Top Bar ใน Mobile */
+    .admin-top-bar {
+        display: flex;
+    }
+    
+    /* แสดงปุ่มแฮมเบอร์เกอร์ใน Mobile */
+    .menu-toggle-btn {
+        display: block;
+    }
+    
     .admin-layout {
         flex-direction: column;
+        padding-top: 60px; /* เว้นที่สำหรับ Top Bar */
     }
 
     .sidebar {
-        width: 100%;
-        height: auto;
-        min-height: 0;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        position: sticky; /* ทำให้เมนูบนสุดติดจอเมื่อเลื่อน */
-        top: 0;
-        z-index: 100;
+        width: 260px;
+        height: calc(100vh - 60px);
+        position: fixed;
+        top: 60px;
+        left: 0;
+        background-color: #0d1b2a;
+        color: #e0e1dd;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+        z-index: 999;
+        border-right: 1px solid #415a77;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 5px 0px 15px rgba(0,0,0,0.2);
     }
 
     .sidebar .logo {
-        margin-bottom: 0;
-    }
-
-    /* ซ่อนเมนูและปุ่ม Logout ใน Sidebar ปกติ */
-    .sidebar nav, .sidebar-footer {
-        display: none;
+        display: none; /* ซ่อนโลโก้ใน sidebar mobile */
     }
 
     .admin-content {
         padding: 1.5rem;
+        width: 100%;
+        background-color: var(--bg-color);
     }
-    
+
     .admin-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+        flex-wrap: wrap;
     }
 
     .admin-header h2 {
@@ -252,331 +375,23 @@ tbody tr:hover {
         padding: 0.5rem 0.75rem;
         font-size: 0.9rem;
     }
-    
-    /* ทำให้ตารางเลื่อนซ้าย-ขวาได้ */
+
     .content-table {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
     }
-    
-    table {
-        min-width: 600px; /* กำหนดความกว้างขั้นต่ำให้ตาราง */
-    }
-    
-    .modal-content {
-        padding: 1.5rem;
-    }
-}
-/* --- Overlay --- */
-#overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 998; /* อยู่ใต้ sidebar */
-    display: none;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-}
-#overlay.show {
-    display: block;
-    opacity: 1;
-}
 
-/* --- Top Bar --- */
-.admin-top-bar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    background-color: #0d1b2a;
-    color: #e0e1dd;
-    padding: 0.75rem 1.5rem;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 997;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.admin-top-bar .logo {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--card-bg);
-    margin: 0;
-}
-
-/* --- Hamburger Menu Button --- */
-.menu-toggle-btn {
-    display: block; /* แสดงปุ่มเสมอ */
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 1001;
-}
-.menu-toggle-btn span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #e0e1dd;
-    margin: 5px 0;
-    transition: all 0.3s ease-in-out;
-}
-.menu-toggle-btn.open span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-}
-.menu-toggle-btn.open span:nth-child(2) {
-    opacity: 0;
-}
-.menu-toggle-btn.open span:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -6px);
-}
-
-
-/* --- Main Layout --- */
-.admin-layout {
-    display: flex;
-    padding-top: 60px; /* เว้นที่สำหรับ Top Bar */
-}
-.sidebar {
-    width: 260px;
-    height: calc(100vh - 60px); /* ความสูงเต็มจอ ลบความสูง Top Bar */
-    position: fixed;
-    top: 60px; /* เริ่มใต้ Top Bar */
-    left: 0;
-    background-color: #0d1b2a;
-    color: #e0e1dd;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    transform: translateX(-100%); /* ซ่อนไว้ด้านซ้าย */
-    transition: transform 0.3s ease-in-out;
-    z-index: 999;
-    border-right: 1px solid #415a77;
-}
-.sidebar.open {
-    transform: translateX(0);
-    box-shadow: 5px 0px 15px rgba(0,0,0,0.2);
-}
-
-.sidebar nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.sidebar nav a {
-    display: block;
-    padding: 12px 15px;
-    color: #e0e1dd;
-    text-decoration: none;
-    border-radius: var(--border-radius-md);
-    margin-bottom: 0.5rem;
-}
-.sidebar nav a:hover, .sidebar nav li.active a {
-    background-color: #415a77;
-}
-.sidebar-footer {
-    margin-top: auto;
-}
-.admin-content {
-    flex-grow: 1;
-    padding: 2rem;
-    width: 100%;
-    transition: margin-left 0.3s ease-in-out;
-    background-color: var(--bg-color);
-}
-.admin-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    flex-wrap: wrap; /* ทำให้ปุ่มขึ้นบรรทัดใหม่ได้ถ้าจอแคบ */
-    gap: 1rem;
-}
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* --- Content Table (Responsive Fix) --- */
-.content-table {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--card-shadow);
-    overflow-x: auto; /* ทำให้ตารางเลื่อนซ้าย-ขวาได้ */
-    -webkit-overflow-scrolling: touch;
-}
-table {
-    width: 100%;
-    min-width: 600px; /* กำหนดความกว้างขั้นต่ำให้ตาราง */
-    border-collapse: collapse;
-}
-th, td {
-    padding: 1rem 1.5rem;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-    white-space: nowrap; /* ป้องกันข้อความในตารางตัดคำ */
-}
-
-/* ... (โค้ด Modal และอื่นๆ เหมือนเดิม) ... */
-
-thead {
-    background-color: #f8f9fa;
-}
-th {
-    font-weight: 600;
-    color: var(--text-secondary);
-}
-tbody tr:last-child td {
-    border-bottom: none;
-}
-tbody tr:hover {
-    background-color: #f8f9fa;
-}
-.action-buttons button {
-    margin-right: 0.5rem;
-    padding: 5px 10px;
-}
-
-/* --- Hamburger Menu Button --- */
-.menu-toggle-btn {
-    display: none; /* ซ่อนบนจอใหญ่ */
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    z-index: 1001;
-}
-.menu-toggle-btn span {
-    display: block;
-    width: 25px;
-    height: 3px;
-    background-color: #e0e1dd;
-    margin: 5px 0;
-    transition: all 0.3s ease-in-out;
-}
-
-/* --- Modal Styles --- */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-}
-.modal-content {
-    background-color: var(--card-bg);
-    padding: 2rem 3rem;
-    border-radius: var(--border-radius-lg);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    width: 100%;
-    max-width: 500px;
-    position: relative;
-    animation: slide-down 0.3s ease-out;
-}
-@keyframes slide-down {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-.close-btn {
-    color: #aaa;
-    position: absolute;
-    top: 1rem; right: 1.5rem;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.close-btn:hover, .close-btn:focus { color: #000; }
-.form-group { margin-bottom: 1.5rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
-.form-group input, .form-group select, .form-group textarea {
-    width: 100%; padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    font-size: 1rem;
-}
-.form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
-
-/* ... (โค้ด CSS อื่นๆ ที่มีอยู่แล้ว) ... */
-
-
-/* --- Responsive Design --- */
-@media (max-width: 900px) {
-    .admin-layout {
-        flex-direction: column;
-    }
-    .sidebar {
-        width: 260px;
-        height: 100%;
-        position: fixed; /* ทำให้เป็นเมนู slide-out */
-        top: 0;
-        left: 0;
-        transform: translateX(-100%); /* ซ่อนไว้ด้านซ้าย */
-        z-index: 999;
-        padding-top: 4rem;
-    }
-    .sidebar.open {
-        transform: translateX(0); /* แสดงเมนู */
-        box-shadow: 5px 0px 15px rgba(0,0,0,0.2);
-    }
-    .sidebar .logo {
-        display: none; /* ซ่อนโลโก้ในเมนู slide-out */
-    }
-
-    .admin-content {
-        padding: 1.5rem;
-        padding-top: 6rem; /* เพิ่ม padding ด้านบนกันเมนูทับ */
-    }
-
-    /* Top bar สำหรับมือถือ */
-    .admin-top-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background-color: #0d1b2a;
-        color: #e0e1dd;
-        padding: 1rem 1.5rem;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 997;
-    }
-    .admin-top-bar .logo {
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: var(--card-bg);
-    }
-    
-    /* แสดงปุ่มแฮมเบอร์เกอร์ */
-    .menu-toggle-btn {
-        display: block;
-    }
-
-    /* Animation ของปุ่มเมื่อกด */
-    .menu-toggle-btn.open span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
-    }
-    .menu-toggle-btn.open span:nth-child(2) {
-        opacity: 0;
-    }
-    .menu-toggle-btn.open span:nth-child(3) {
-        transform: rotate(-45deg) translate(7px, -6px);
-    }
-
-    /* ทำให้ตารางเลื่อนได้ */
-    .content-table {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
     table {
         min-width: 600px;
+    }
+    
+    th, td {
+        white-space: nowrap;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        margin: 1rem;
+        max-width: calc(100% - 2rem);
     }
 }
