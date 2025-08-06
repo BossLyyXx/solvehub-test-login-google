@@ -10,9 +10,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+    <div id="overlay"></div>
+
+    <div class="admin-top-bar">
+        <button id="menu-toggle-btn" class="menu-toggle-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 class="logo">SolveHub Admin</h1>
+    </div>
+
     <div class="admin-layout">
-        <aside class="sidebar">
-            <h1 class="logo">SolveHub</h1>
+        <aside class="sidebar" id="sidebar">
             <nav id="sidebar-nav">
                 <ul>
                     <li class="active" data-view="solutions"><a href="#">จัดการเฉลย</a></li>

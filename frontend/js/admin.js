@@ -1,62 +1,42 @@
-// --- Hamburger Menu Logic ---
+import { API_BASE_URL } from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Hamburger Menu Logic ---
     const menuToggleBtn = document.getElementById('menu-toggle-btn');
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay');
 
-    // สร้าง Top Bar บนมือถือแบบไดนามิก
-    if (window.innerWidth <= 900) {
-        if (!document.querySelector('.admin-top-bar')) {
-            const topBar = document.createElement('div');
-            topBar.className = 'admin-top-bar';
-            
-            const logo = document.createElement('h1');
-            logo.className = 'logo';
-            logo.textContent = 'SolveHub';
-
-            topBar.appendChild(menuToggleBtn.cloneNode(true)); // คัดลอกปุ่มมาใส่ top bar
-            topBar.appendChild(logo);
-            document.querySelector('.admin-layout').prepend(topBar);
-        }
-    }
-
-    // ฟังก์ชันสำหรับปิดเมนู
     const closeMenu = () => {
         if (sidebar) sidebar.classList.remove('open');
         if (overlay) overlay.classList.remove('show');
-        const activeToggle = document.querySelector('.menu-toggle-btn.open');
-        if (activeToggle) activeToggle.classList.remove('open');
+        if (menuToggleBtn) menuToggleBtn.classList.remove('open');
     };
 
-    // Event listener สำหรับปุ่มแฮมเบอร์เกอร์ (ทั้งใน top bar และ sidebar)
-    document.querySelectorAll('.menu-toggle-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+    if (menuToggleBtn) {
+        menuToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             sidebar.classList.toggle('open');
             overlay.classList.toggle('show');
-            document.querySelectorAll('.menu-toggle-btn').forEach(b => b.classList.toggle('open'));
+            menuToggleBtn.classList.toggle('open');
         });
-    });
-    
+    }
+
     if (overlay) {
         overlay.addEventListener('click', closeMenu);
     }
 
-    // ปิดเมนูเมื่อคลิกลิงก์ในเมนู
     document.querySelectorAll('#sidebar-nav a').forEach(link => {
         link.addEventListener('click', closeMenu);
     });
-});
+    // --- End of Hamburger Menu Logic ---
 
-// --- โค้ดเดิมของคุณทั้งหมด ---
-import { API_BASE_URL } from './config.js';
 
-document.addEventListener('DOMContentLoaded', () => {
+    // --- Main Application Logic ---
     const role = localStorage.getItem('user_role');
     const token = localStorage.getItem('access_token');
     
     if (role !== 'admin' || !token) {
-        // window.location.href = 'index.html'; // ปิดการ redirect ชั่วคราวเพื่อ debug
+        window.location.href = 'admin-login.html';
         return;
     }
 
