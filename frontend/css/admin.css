@@ -267,3 +267,245 @@ tbody tr:hover {
         padding: 1.5rem;
     }
 }
+/* --- Overlay --- */
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 998; /* อยู่ใต้ sidebar */
+    display: none; /* ซ่อนไว้ก่อน */
+}
+#overlay.show {
+    display: block;
+}
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+.sidebar {
+    width: 260px;
+    background-color: #0d1b2a;
+    color: #e0e1dd;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease-in-out; /* เพิ่ม animation */
+}
+.sidebar .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--card-bg);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar nav a {
+    display: block;
+    padding: 12px 15px;
+    color: #e0e1dd;
+    text-decoration: none;
+    border-radius: var(--border-radius-md);
+    margin-bottom: 0.5rem;
+}
+.sidebar nav a:hover, .sidebar nav li.active a {
+    background-color: #415a77;
+}
+.sidebar-footer {
+    margin-top: auto;
+}
+.admin-content {
+    flex-grow: 1;
+    padding: 2rem 3rem;
+    background-color: var(--bg-color);
+}
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.content-table {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+thead {
+    background-color: #f8f9fa;
+}
+th {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+tbody tr:last-child td {
+    border-bottom: none;
+}
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+.action-buttons button {
+    margin-right: 0.5rem;
+    padding: 5px 10px;
+}
+
+/* --- Hamburger Menu Button --- */
+.menu-toggle-btn {
+    display: none; /* ซ่อนบนจอใหญ่ */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+}
+.menu-toggle-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #e0e1dd;
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+/* --- Modal Styles --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background-color: var(--card-bg);
+    padding: 2rem 3rem;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    animation: slide-down 0.3s ease-out;
+}
+@keyframes slide-down {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn:hover, .close-btn:focus { color: #000; }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    font-size: 1rem;
+}
+.form-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
+
+/* ... (โค้ด CSS อื่นๆ ที่มีอยู่แล้ว) ... */
+
+
+/* --- Responsive Design --- */
+@media (max-width: 900px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 260px;
+        height: 100%;
+        position: fixed; /* ทำให้เป็นเมนู slide-out */
+        top: 0;
+        left: 0;
+        transform: translateX(-100%); /* ซ่อนไว้ด้านซ้าย */
+        z-index: 999;
+        padding-top: 4rem;
+    }
+    .sidebar.open {
+        transform: translateX(0); /* แสดงเมนู */
+        box-shadow: 5px 0px 15px rgba(0,0,0,0.2);
+    }
+    .sidebar .logo {
+        display: none; /* ซ่อนโลโก้ในเมนู slide-out */
+    }
+
+    .admin-content {
+        padding: 1.5rem;
+        padding-top: 6rem; /* เพิ่ม padding ด้านบนกันเมนูทับ */
+    }
+
+    /* Top bar สำหรับมือถือ */
+    .admin-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #0d1b2a;
+        color: #e0e1dd;
+        padding: 1rem 1.5rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 997;
+    }
+    .admin-top-bar .logo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--card-bg);
+    }
+    
+    /* แสดงปุ่มแฮมเบอร์เกอร์ */
+    .menu-toggle-btn {
+        display: block;
+    }
+
+    /* Animation ของปุ่มเมื่อกด */
+    .menu-toggle-btn.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    .menu-toggle-btn.open span:nth-child(2) {
+        opacity: 0;
+    }
+    .menu-toggle-btn.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* ทำให้ตารางเลื่อนได้ */
+    .content-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    table {
+        min-width: 600px;
+    }
+}

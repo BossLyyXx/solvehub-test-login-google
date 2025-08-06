@@ -1,3 +1,55 @@
+// --- Hamburger Menu Logic ---
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggleBtn = document.getElementById('menu-toggle-btn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const adminContent = document.querySelector('.admin-content');
+
+    // สร้าง Top Bar บนมือถือแบบไดนามิก
+    if (window.innerWidth <= 900) {
+        if (!document.querySelector('.admin-top-bar')) {
+            const topBar = document.createElement('div');
+            topBar.className = 'admin-top-bar';
+            
+            const logo = document.createElement('h1');
+            logo.className = 'logo';
+            logo.textContent = 'SolveHub';
+
+            topBar.appendChild(menuToggleBtn.cloneNode(true)); // คัดลอกปุ่มมาใส่ top bar
+            topBar.appendChild(logo);
+            document.querySelector('.admin-layout').prepend(topBar);
+        }
+    }
+
+    // ฟังก์ชันสำหรับปิดเมนู
+    const closeMenu = () => {
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+        const activeToggle = document.querySelector('.menu-toggle-btn.open');
+        if (activeToggle) activeToggle.classList.remove('open');
+    };
+
+    // Event listener สำหรับปุ่มแฮมเบอร์เกอร์ (ทั้งใน top bar และ sidebar)
+    document.querySelectorAll('.menu-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+            document.querySelectorAll('.menu-toggle-btn').forEach(b => b.classList.toggle('open'));
+        });
+    });
+
+    if (overlay) {
+        overlay.addEventListener('click', closeMenu);
+    }
+
+    // ปิดเมนูเมื่อคลิกลิงก์ในเมนู
+    document.querySelectorAll('#sidebar-nav a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
+});
+
+// --- โค้ดเดิมของคุณทั้งหมด ---
 import { API_BASE_URL } from './config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -5,11 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const userRole = localStorage.getItem('user_role');
 
     if (!initialToken || !['admin', 'moderator'].includes(userRole)) {
-        window.location.href = 'index.html';
+        // window.location.href = 'index.html'; // ปิดการ redirect ชั่วคราวเพื่อ debug
         return;
     }
     
-    // --- Toast Notification Setup (ที่ขาดไป) ---
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -59,14 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         delete: (e, i) => api._call(`${e}/${i}`, 'DELETE'),
     };
     
-    // --- GENERIC MODAL SETUP ---
     document.querySelectorAll('.modal').forEach(modal => {
         modal.querySelector('.close-btn')?.addEventListener('click', () => modal.style.display = 'none');
         modal.querySelector('.cancel-btn')?.addEventListener('click', () => modal.style.display = 'none');
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
     });
 
-    // --- DELETE CONFIRMATION MODAL ---
     const deleteConfirmationModal = document.createElement('div');
     deleteConfirmationModal.className = 'delete-confirmation-modal';
     deleteConfirmationModal.innerHTML = `
@@ -95,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteConfirmationModal.style.display = 'flex';
     }
 
-    // --- Helper for Empty State ---
     function renderEmptyState(containerSelector, icon, title, text, buttonText, onButtonClick) {
         const container = document.querySelector(containerSelector);
         if (!container) return;
@@ -109,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
         container.querySelector('.add-from-empty-state').addEventListener('click', onButtonClick);
     }
     
-    // --- SOLUTIONS LOGIC ---
     const solutionModal = document.getElementById('solution-modal');
     const solutionForm = document.getElementById('solution-form');
     async function renderSolutionsDashboard() {
@@ -131,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fileName = s.file_path ? s.file_path.split('/').pop() : 'ไม่มี';
                 
                 const isOwner = s.creator_username === currentUsername;
-                const actionButtonsHTML = isOwner ? `
+                const actionButtonsHTML = (userRole === 'admin' || isOwner) ? `
                     <button class="btn btn-secondary btn-sm edit-btn">แก้ไข</button>
                     <button class="btn btn-info btn-sm upload-btn">ไฟล์</button>
                     <button class="btn btn-danger btn-sm delete-btn">ลบ</button>
@@ -139,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 row.innerHTML = `<td>${s.title}</td><td>${s.subjectName}</td><td>${s.creator_username}</td><td>${fileName}</td><td class="action-buttons">${actionButtonsHTML}</td>`;
                 
-                if (isOwner) {
+                if (userRole === 'admin' || isOwner) {
                     row.querySelector('.edit-btn').addEventListener('click', () => openSolutionModal('edit', s.id));
                     row.querySelector('.upload-btn').addEventListener('click', () => openUploadModal(s.id));
                     row.querySelector('.delete-btn').addEventListener('click', () => showDeleteConfirmation(async () => {
@@ -186,7 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // File Upload Logic
     const fileUploadModal = document.getElementById('file-upload-modal');
     function openUploadModal(solutionId) {
         const uploadForm = fileUploadModal.querySelector('#file-upload-form');
@@ -221,13 +267,15 @@ document.addEventListener('DOMContentLoaded', () => {
     fileUploadModal.querySelector('#file-upload-area').addEventListener('click', () => fileUploadModal.querySelector('#file-input').click());
     fileUploadModal.querySelector('#file-input').addEventListener('change', (e) => { if (e.target.files.length > 0) uploadFile(e.target.files[0]); });
 
-    // --- HEADER BUTTONS ---
     document.getElementById('add-solution-btn-header').addEventListener('click', () => openSolutionModal('add'));
 
-    // --- INITIAL LOAD & LOGOUT ---
     renderSolutionsDashboard();
-    document.getElementById('logout-btn').addEventListener('click', () => {
-        localStorage.clear();
-        window.location.href = 'index.html';
-    });
+
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = 'index.html';
+        });
+    }
 });

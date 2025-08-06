@@ -10,8 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+    <div id="overlay"></div>
+    
     <div class="admin-layout">
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
+             <button id="menu-toggle-btn" class="menu-toggle-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <h1 class="logo">SolveHub</h1>
             <nav id="sidebar-nav">
                 <ul>
@@ -26,6 +33,7 @@
         <main class="admin-content">
             <div id="view-solutions" class="view-container">
                 <header class="admin-header">
+                    <h2>จัดการเฉลย</h2>
                     <div class="header-actions">
                         <button id="add-solution-btn-header" class="btn btn-primary">เพิ่มเฉลยใหม่</button>
                         <button id="theme-toggle-solutions" class="btn btn-secondary">🌙</button>
