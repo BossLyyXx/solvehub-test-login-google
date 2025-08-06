@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('access_token');
     
     if (role !== 'admin' || !token) {
-        window.location.href = 'admin-login.html';
+        window.location.href = 'unauthorized.html'; // <-- บรรทัดที่แก้ไข
         return;
     }
 
