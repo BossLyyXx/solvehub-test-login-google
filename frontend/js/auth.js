@@ -1,85 +1,115 @@
-// ฟังก์ชันสำหรับจัดการล็อกอิน
-function login(event) {
-    event.preventDefault();
+import { API_BASE_URL } from './config.js';
+
+// --- ฟังก์ชันสำหรับจัดการ Login Flow (ใช้ซ้ำได้) ---
+async function handleSuccessfulLogin(data) {
+    localStorage.setItem('access_token', data.access_token);
+    localStorage.setItem('user_role', data.user.role);
+    localStorage.setItem('username', data.user.username);
+    // --- เพิ่มการบันทึก URL รูปภาพ ---
+    localStorage.setItem('picture_url', data.user.picture_url || '');
+
+
+    const welcomeMessage = `ยินดีต้อนรับคุณ ${data.user.username}`;
     
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    Swal.close();
+
+    await Swal.fire({
+        icon: 'success',
+        title: 'เข้าสู่ระบบสำเร็จ!',
+        text: welcomeMessage,
+        timer: 1500,
+        showConfirmButton: false
+    });
     
-    // ตรวจสอบข้อมูลล็อกอิน (ตัวอย่าง)
-    const users = {
-        'admin@example.com': { password: 'admin123', role: 'admin' },
-        'moderator@example.com': { password: 'mod123', role: 'moderator' },
-        'user@example.com': { password: 'user123', role: 'user' }
-    };
-    
-    if (users[email] && users[email].password === password) {
-        // เก็บข้อมูลผู้ใช้ใน localStorage
-        localStorage.setItem('user_email', email);
-        localStorage.setItem('user_role', users[email].role);
-        localStorage.setItem('isLoggedIn', 'true');
-        
-        // redirect ตาม role
-        redirectToDashboard(users[email].role);
+    redirectToDashboard(data.user.role);
+}
+
+// --- ฟังก์ชันสำหรับแสดงข้อผิดพลาด (ใช้ซ้ำได้) ---
+function handleLoginError(error) {
+     if (typeof Swal !== 'undefined') {
+        Swal.fire({
+            icon: 'error',
+            title: 'เข้าสู่ระบบไม่สำเร็จ',
+            text: error.message || 'กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง'
+        });
     } else {
-        alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
+        alert('เข้าสู่ระบบไม่สำเร็จ: ' + error.message);
     }
 }
 
-// แก้ไขฟังก์ชัน redirectToDashboard ให้ redirect ตาม role จริงๆ
 function redirectToDashboard(role) {
-    switch(role) {
-        case 'admin':
-            window.location.href = 'admin-dashboard.html';
-            break;
-        case 'moderator':
-            window.location.href = 'moderator-dashboard.html';
-            break;
-        case 'user':
-        default:
-            window.location.href = 'subjects.html';
-            break;
-    }
+    window.location.href = 'subjects.html';
 }
 
-// ฟังก์ชันตรวจสอบสิทธิ์การเข้าถึง
-function checkUserRole(requiredRole) {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const userRole = localStorage.getItem('user_role');
+
+// --- Event Listeners ---
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
     
-    // ถ้าไม่ได้ล็อกอิน
-    if (!isLoggedIn || isLoggedIn !== 'true') {
-        redirectToUnauthorized();
-        return false;
+    // 1. Listener สำหรับฟอร์ม Login ปกติ
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = e.target.username.value;
+            const password = e.target.password.value;
+            const loginButton = e.target.querySelector('button[type="submit"]');
+            loginButton.disabled = true;
+            loginButton.textContent = 'กำลังตรวจสอบ...';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+                }
+                
+                await handleSuccessfulLogin(data);
+
+            } catch (error) {
+                 handleLoginError(error);
+                 loginButton.disabled = false;
+                 loginButton.textContent = 'เข้าสู่ระบบ';
+            }
+        });
     }
-    
-    // ถ้า role ไม่ตรงกับที่ต้องการ
-    if (userRole !== requiredRole) {
-        redirectToUnauthorized();
-        return false;
-    }
-    
-    return true;
-}
 
-// ฟังก์ชัน redirect ไปหน้าไม่มีสิทธิ์
-function redirectToUnauthorized() {
-    window.location.href = '404.html';
-}
+    // 2. Listener สำหรับ Google Sign-In
+    document.addEventListener('google-signin-success', async (event) => {
+        const id_token = event.detail;
 
-// ฟังก์ชันล็อกเอาต์
-function logout() {
-    localStorage.removeItem('user_email');
-    localStorage.removeItem('user_role');
-    localStorage.removeItem('isLoggedIn');
-    window.location.href = 'index.html';
-}
+        Swal.fire({
+            title: 'กำลังเข้าสู่ระบบผ่าน Google...',
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
 
-// ฟังก์ชันตรวจสอบว่าผู้ใช้ล็อกอินแล้วหรือไม่
-function isUserLoggedIn() {
-    return localStorage.getItem('isLoggedIn') === 'true';
-}
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/login/google`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: id_token })
+            });
 
-// ฟังก์ชันได้ role ของผู้ใช้
-function getUserRole() {
-    return localStorage.getItem('user_role');
-}
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'เกิดข้อผิดพลาดในการเข้าสู่ระบบด้วย Google');
+            }
+
+            await handleSuccessfulLogin(data);
+
+        } catch (error) {
+            handleLoginError(error);
+        }
+    });
+});

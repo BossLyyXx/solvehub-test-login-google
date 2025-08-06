@@ -3,65 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moderator Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="js/auth.js"></script>
-    <script>
-        // ตรวจสอบสิทธิ์ทันทีที่โหลดหน้า
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!checkUserRole('moderator')) {
-                // หยุดการโหลดหน้าและ redirect
-                document.body.style.display = 'none';
-                return;
-            }
-            
-            // แสดงหน้าถ้าผ่านการตรวจสอบ
-            document.body.style.display = 'block';
-        });
-    </script>
-    <style>
-        body {
-            display: none; /* ซ่อนหน้าจนกว่าจะผ่านการตรวจสอบ */
-        }
-    </style>
+    <title>Moderator Dashboard - SolveHub</title>
+    <link rel="icon" type="image/x-icon" href="../DekAi.ico?v=2">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-    <div class="moderator-dashboard">
-        <header>
-            <h1>Moderator Dashboard</h1>
-            <div class="user-info">
-                <span>ยินดีต้อนรับ, Moderator</span>
-                <button onclick="logout()" class="logout-btn">ออกจากระบบ</button>
+    <div id="overlay"></div>
+    
+    <div class="admin-top-bar">
+        <button id="menu-toggle-btn" class="menu-toggle-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <h1 class="logo">SolveHub Moderator</h1>
+    </div>
+
+    <div class="admin-layout">
+        <aside class="sidebar" id="sidebar">
+            <nav id="sidebar-nav">
+                <ul>
+                    <li class="active" data-view="solutions"><a href="#">จัดการเฉลย</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn btn-secondary">ออกจากระบบ</button>
             </div>
-        </header>
+        </aside>
         
-        <main>
-            <div class="dashboard-grid">
-                <div class="dashboard-card">
-                    <h3>จัดการเนื้อหา</h3>
-                    <p>ตรวจสอบและอนุมัติเนื้อหา</p>
-                    <button class="btn-primary">จัดการ</button>
-                </div>
-                
-                <div class="dashboard-card">
-                    <h3>ตอบคำถาม</h3>
-                    <p>ตอบคำถามของผู้ใช้</p>
-                    <button class="btn-primary">ตอบคำถาม</button>
-                </div>
-                
-                <div class="dashboard-card">
-                    <h3>รายงานปัญหา</h3>
-                    <p>จัดการรายงานปัญหาต่างๆ</p>
-                    <button class="btn-primary">ดูรายงาน</button>
-                </div>
-                
-                <div class="dashboard-card">
-                    <h3>สถิติการใช้งาน</h3>
-                    <p>ดูสถิติการใช้งานพื้นฐาน</p>
-                    <button class="btn-primary">ดูสถิติ</button>
-                </div>
+        <main class="admin-content">
+            <div id="view-solutions" class="view-container">
+                <header class="admin-header">
+                    <h2>จัดการเฉลย</h2>
+                    <div class="header-actions">
+                        <button id="add-solution-btn-header" class="btn btn-primary">เพิ่มเฉลยใหม่</button>
+                        <button id="theme-toggle-solutions" class="btn btn-secondary">🌙</button>
+                    </div>
+                </header>
+                <div class="content-table"></div>
             </div>
         </main>
     </div>
+
+    <div id="solution-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="solution-modal-title"></h2>
+            <form id="solution-form">
+                <input type="hidden" id="solution-id">
+                <div class="form-group">
+                    <label for="solution-title">ชื่อหัวข้อ</label>
+                    <input type="text" id="solution-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="solution-subject">เลือกวิชา</label>
+                    <select id="solution-subject" required></select>
+                </div>
+                <div class="form-group">
+                    <label for="solution-text-content">เนื้อหา (ข้อความ)</label>
+                    <textarea id="solution-text-content" rows="6"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-btn">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="file-upload-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>อัปโหลดไฟล์สำหรับเฉลย</h2>
+            <form id="file-upload-form">
+                <input type="hidden" id="upload-solution-id">
+                <div class="form-group">
+                    <div id="file-upload-area">
+                        <input type="file" id="file-input" hidden accept="image/*,application/pdf,.zip,.rar">
+                        <p>คลิก หรือลากไฟล์มาวาง</p>
+                        <div id="file-preview"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary cancel-btn">ปิด</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/moderator.js"></script>
+    <script src="js/theme-toggle.js"></script>
 </body>
 </html>
