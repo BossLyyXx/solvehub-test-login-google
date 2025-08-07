@@ -83,14 +83,19 @@
         }
         
         /* --- Glassmorphism Google Button Wrapper --- */
+        .google-btn-container {
+            /* เพิ่ม container นี้เพื่อจัดกลางโดยเฉพาะ */
+            text-align: center;
+        }
+
         .g_id_signin {
             background: rgba(255, 255, 255, 0.05);
             border-radius: var(--border-radius-md);
             border: 1px solid rgba(255, 255, 255, 0.1);
             overflow: hidden;
             padding: 2px;
-            /* --- เพิ่ม 2 บรรทัดนี้เพื่อจัดกลาง --- */
-            display: flex;
+            /* --- แก้ไขตรงนี้ --- */
+            display: inline-flex; /* ทำให้กรอบมีขนาดพอดีกับปุ่ม */
             justify-content: center;
         }
 
@@ -132,13 +137,16 @@
              data-auto_prompt="false">
         </div>
 
-        <div class="g_id_signin"
-             data-type="standard"
-             data-shape="rectangular"
-             data-theme="filled_black"
-             data-text="signin_with"
-             data-size="large"
-             data-logo_alignment="left">
+        <!-- เพิ่ม container div เพื่อช่วยจัดกลาง -->
+        <div class="google-btn-container">
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="filled_black"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left">
+            </div>
         </div>
     </div>
     
