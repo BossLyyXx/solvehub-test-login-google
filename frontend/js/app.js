@@ -86,13 +86,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const pathname = window.location.pathname.split('/').pop();
     const token = localStorage.getItem('access_token');
 
-    if (token && (pathname === 'index.html' || pathname === '' || pathname === '/')) {
+    // --- บรรทัดที่แก้ไข ---
+    // ถ้ามี token (login แล้ว) และกำลังเข้าหน้า welcome หรือ index ให้ส่งไปหน้า subjects เลย
+    if (token && (pathname === 'index.html' || pathname === 'welcome.html' || pathname === '' || pathname === '/')) {
         window.location.href = 'subjects.html';
         return;
     }
-    if (!token && pathname !== 'index.html' && pathname !== '' && pathname !== '/') {
-        if(pathname !== 'admin-login.html') {
-            window.location.href = 'index.html';
+    // ถ้าไม่มี token และไม่ได้อยู่หน้า welcome หรือ index ให้ส่งไปหน้า login
+    if (!token && pathname !== 'index.html' && pathname !== 'welcome.html' && pathname !== '' && pathname !== '/') {
+        if(pathname !== 'admin-login.html') { // อนุญาตให้เข้าหน้า admin-login ได้
+            window.location.href = 'welcome.html'; // ส่งไปหน้า welcome แทน index
             return;
         }
     }
