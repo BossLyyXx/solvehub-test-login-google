@@ -3,58 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - SolveHub</title>
+    <title>ยินดีต้อนรับสู่ SolveHub</title>
     <link rel="icon" type="image/x-icon" href="../DekAi.ico?v=2">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/login.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="css/welcome.css">
 </head>
-<body class="login-page">
-    <div class="login-container">
-        <h1 class="logo">SolveHub</h1>
-        <p class="subtitle">เข้าสู่ระบบเพื่อดูเฉลยการบ้าน</p>
-        <form id="login-form">
-            <div class="input-group">
-                <label for="username">ชื่อผู้ใช้</label>
-                <input type="text" id="username" name="username" required placeholder="กรอกชื่อผู้ใช้ของคุณ">
-            </div>
-            <div class="input-group">
-                <label for="password">รหัสผ่าน</label>
-                <input type="password" id="password" name="password" required placeholder="********">
-            </div>
-            <button type="submit" class="btn btn-primary btn-full">เข้าสู่ระบบ</button>
-        </form>
+<body>
+    <canvas id="bg-canvas"></canvas>
 
-        <div style="text-align: center; margin: 1.5rem 0; color: var(--text-secondary);">หรือ</div>
-        
-        <div id="g_id_onload"
-             data-client_id="688643244558-vrrv0t3iut0iahp5ssgbna11f7vc139t.apps.googleusercontent.com"
-             data-context="signin"
-             data-ux_mode="popup"
-             data-callback="onSignIn"
-             data-auto_prompt="false">
+    <header class="welcome-header">
+        <div class="header-container">
+            <div class="logo">SolveHub</div>
+            <!-- แก้ไขลิงก์ตรงนี้ -->
+            <a href="login.html" class="btn btn-primary">เข้าสู่ระบบ</a>
         </div>
+    </header>
 
-        <div class="g_id_signin"
-             data-type="standard"
-             data-shape="rectangular"
-             data-theme="outline"
-             data-text="signin_with"
-             data-size="large"
-             data-logo_alignment="left">
-        </div>
-    </div>
-    
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script type="module" src="js/auth.js"></script>
-    <script>
-        // ฟังก์ชันนี้จะถูกเรียกโดย Google API เมื่อ login สำเร็จ
-        function onSignIn(googleUser) {
-            // ส่ง event นี้ไปให้ auth.js จัดการต่อ
-            // googleUser.credential คือ JWT token ที่เราต้องการ
-            const event = new CustomEvent('google-signin-success', { detail: googleUser.credential });
-            document.dispatchEvent(event);
-        }
-    </script>
+    <main class="main-content">
+        <section class="hero-section">
+            <h1>ปลดล็อกทุกคำตอบ<br>ที่นี่ที่เดียว</h1>
+            <p>SolveHub คือคลังเฉลยการบ้านและแบบฝึกหัดที่ใหญ่ที่สุด<br>สร้างและแบ่งปันโดยนักศึกษาเพื่อนักศึกษา</p>
+            <!-- แก้ไขลิงก์ตรงนี้ -->
+            <a href="login.html" class="btn btn-primary btn-cta">เริ่มต้นใช้งาน</a>
+        </section>
+
+        <section class="features-section">
+            <h2>ทำไมต้อง SolveHub?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>ค้นหาง่าย</h3>
+                    <p>ค้นหาเฉลยจากวิชาและหัวข้อที่คุณต้องการได้อย่างรวดเร็ว</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">✅</div>
+                    <h3>เนื้อหาเชื่อถือได้</h3>
+                    <p>ทุกเฉลยผ่านการตรวจสอบจากทีมงานและผู้ดูแลระบบ</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>ชุมชนแห่งการแบ่งปัน</h3>
+                    <p>ร่วมเป็นส่วนหนึ่งในการสร้างคลังความรู้และช่วยเหลือเพื่อนๆ</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script type="module" src="js/welcome-3d.js"></script>
 </body>
 </html>

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const userRole = localStorage.getItem('user_role');
 
     if (!initialToken || !['admin', 'moderator'].includes(userRole)) {
-        window.location.href = 'unauthorized.html'; // <-- บรรทัดที่แก้ไข
+        window.location.href = 'unauthorized.html';
         return;
     }
     
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return fetch(`${API_BASE_URL}/api/${endpoint}`, config).then(async res => {
                 if (res.status === 401) {
                     localStorage.clear();
-                    window.location.href = 'index.html';
+                    window.location.href = 'login.html'; // แก้ไขลิงก์ตรงนี้
                     return Promise.reject(new Error('Token ไม่ถูกต้องหรือไม่ได้รับอนุญาต'));
                 }
                 if (!res.ok) {
@@ -256,7 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             localStorage.clear();
-            window.location.href = 'index.html';
+            // แก้ไขลิงก์ตรงนี้
+            window.location.href = 'login.html';
         });
     }
 });
