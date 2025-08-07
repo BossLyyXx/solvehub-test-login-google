@@ -8,8 +8,102 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        /* --- Video Background Styles --- */
+        #video-bg {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            object-fit: cover;
+            filter: brightness(0.6) blur(3px);
+        }
+
+        body.login-page {
+            background-color: #1a1a2e;
+        }
+
+        /* --- Apple-style Glassmorphism Container --- */
+        .login-container {
+            background-color: rgba(30, 30, 45, 0.25); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        /* --- Text Styles --- */
+        .login-container .logo,
+        .login-container .subtitle,
+        .input-group label {
+            color: #f0f0f0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        /* --- Glassmorphism Input Fields --- */
+        .input-group input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .input-group input:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+        }
+
+        /* --- Glassmorphism Button --- */
+        .btn-primary.btn-full {
+            background: rgba(0, 123, 255, 0.25);
+            border: 1px solid rgba(0, 123, 255, 0.5);
+            color: #fff;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary.btn-full:hover {
+            background: rgba(0, 123, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* --- Divider Text --- */
+        .divider-text {
+            color: rgba(255, 255, 255, 0.6) !important;
+        }
+        
+        /* --- Glassmorphism Google Button Wrapper --- */
+        .g_id_signin {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            padding: 2px;
+        }
+
+        .g_id_signin > div {
+           border-radius: 6px !important;
+           box-shadow: none !important;
+        }
+    </style>
 </head>
 <body class="login-page">
+
+    <video autoplay muted loop playsinline id="video-bg">
+        <source src="assets/videos/login-bg.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <div class="login-container">
         <h1 class="logo">SolveHub</h1>
         <p class="subtitle">เข้าสู่ระบบเพื่อดูเฉลยการบ้าน</p>
@@ -25,7 +119,7 @@
             <button type="submit" class="btn btn-primary btn-full">เข้าสู่ระบบ</button>
         </form>
 
-        <div style="text-align: center; margin: 1.5rem 0; color: var(--text-secondary);">หรือ</div>
+        <div class="divider-text" style="text-align: center; margin: 1.5rem 0;">หรือ</div>
         
         <div id="g_id_onload"
              data-client_id="688643244558-vrrv0t3iut0iahp5ssgbna11f7vc139t.apps.googleusercontent.com"
@@ -38,7 +132,7 @@
         <div class="g_id_signin"
              data-type="standard"
              data-shape="rectangular"
-             data-theme="outline"
+             data-theme="filled_black"
              data-text="signin_with"
              data-size="large"
              data-logo_alignment="left">
@@ -48,10 +142,7 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script type="module" src="js/auth.js"></script>
     <script>
-        // ฟังก์ชันนี้จะถูกเรียกโดย Google API เมื่อ login สำเร็จ
         function onSignIn(googleUser) {
-            // ส่ง event นี้ไปให้ auth.js จัดการต่อ
-            // googleUser.credential คือ JWT token ที่เราต้องการ
             const event = new CustomEvent('google-signin-success', { detail: googleUser.credential });
             document.dispatchEvent(event);
         }
