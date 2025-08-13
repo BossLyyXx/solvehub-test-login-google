@@ -1,0 +1,249 @@
+/* --- Page Header --- */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-header h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --- Leader Section --- */
+.leader-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* --- Flipping Card Base --- */
+.flipping-card {
+    background-color: transparent;
+    perspective: 1500px;
+    cursor: pointer;
+    width: 700px;
+    height: 450px; 
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flipping-card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+/* --- Content inside cards --- */
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1.5rem;
+    border: 4px solid var(--primary-blue);
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+.profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text-dark);
+}
+
+.profile-role {
+    font-size: 1rem;
+    color: var(--primary-blue);
+    font-weight: 500;
+}
+
+.profile-details {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* --- Back of Cards --- */
+.card-back-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    align-content: start;
+}
+
+.back-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.back-profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.back-profile-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.back-profile-email {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- Social Links Styling --- */
+.social-links {
+    margin-top: 1rem;
+    padding-top: 0;
+    /* EDIT: Center the icons */
+    text-align: center; 
+}
+
+.social-links a {
+    font-size: 1.8rem; /* Make icons slightly larger */
+    margin: 0 0.75rem;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.social-links a:hover {
+    transform: scale(1.1);
+}
+
+/* EDIT: Add specific colors for each social icon */
+.social-links a[title="Instagram"] i {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.social-links a[title="Facebook"] i {
+    color: #1877F2;
+}
+
+.social-links a[title="Email"] i,
+.social-links a[title="Link"] i {
+    color: var(--text-secondary);
+}
+.social-links a[title="Email"]:hover i,
+.social-links a[title="Link"]:hover i {
+    color: var(--dark-blue);
+}
+
+
+.info-section {
+    margin-top: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--primary-blue);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+.section-title i {
+    margin-right: 0.75rem;
+}
+
+.info-section p, .tech-list li {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+.tech-list {
+    list-style: none;
+    padding: 0;
+}
+
+.company-logos {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+.company-logos img {
+    height: 35px;
+    max-width: 120px;
+    object-fit: contain;
+}
+
+/* --- Team Grid Layout --- */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 700px);
+    gap: 2.5rem;
+    justify-content: center; 
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1500px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+        justify-items: center; 
+    }
+}
+
+@media (max-width: 768px) {
+    .flipping-card {
+        width: 90vw;
+        height: auto;
+        min-height: 500px;
+    }
+    .card-back-grid {
+        grid-template-columns: 1fr;
+    }
+}

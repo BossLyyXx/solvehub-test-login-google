@@ -19,7 +19,6 @@ function setupUserActions() {
     const pictureUrl = localStorage.getItem('picture_url');
 
     if (!token) {
-        // แก้ไขลิงก์ตรงนี้
         window.location.href = 'login.html';
         return;
     }
@@ -55,45 +54,20 @@ function setupUserActions() {
     logoutBtn.addEventListener('click', (e) => {
         e.preventDefault();
         localStorage.clear();
-        // แก้ไขลิงก์ตรงนี้
         window.location.href = 'login.html';
     });
 }
 
-// --- ฟังก์ชันจัดการ About Dev Modal ---
-function setupAboutDevModal() {
-    const aboutBtn = document.getElementById('about-dev-btn');
-    const aboutModal = document.getElementById('about-dev-modal');
-    const closeModalBtn = document.querySelector('.close-modal-btn');
-
-    if (!aboutBtn || !aboutModal || !closeModalBtn) return;
-
-    aboutBtn.addEventListener('click', () => {
-        aboutModal.classList.add('show');
-    });
-
-    closeModalBtn.addEventListener('click', () => {
-        aboutModal.classList.remove('show');
-    });
-
-    aboutModal.addEventListener('click', (event) => {
-        if (event.target === aboutModal) {
-            aboutModal.classList.remove('show');
-        }
-    });
-}
-
+// --- ลบฟังก์ชัน setupAboutDevModal() ทิ้งไป ---
 
 document.addEventListener('DOMContentLoaded', () => {
     const pathname = window.location.pathname.split('/').pop();
     const token = localStorage.getItem('access_token');
 
-    // ถ้ามี token (login แล้ว) และกำลังเข้าหน้า login หรือ หน้าแรกสุด ให้ส่งไปหน้า subjects เลย
     if (token && (pathname === 'login.html' || pathname === 'index.html' || pathname === '' || pathname === '/')) {
         window.location.href = 'subjects.html';
         return;
     }
-    // ถ้าไม่มี token และไม่ได้อยู่หน้า login หรือ หน้าแรกสุด ให้ส่งไปหน้าแรกสุด (index.html)
     if (!token && pathname !== 'login.html' && pathname !== 'index.html' && pathname !== '' && pathname !== '/') {
         if(pathname !== 'admin-login.html') {
             window.location.href = 'index.html';
@@ -105,8 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setupUserActions();
     }
     
-    setupAboutDevModal();
+    // --- ลบการเรียกใช้ฟังก์ชัน setupAboutDevModal() ---
 
+    // Logic การแสดงผลตามแต่ละหน้า
     if (pathname === 'subjects.html') {
         renderSubjectsPage();
     } else if (pathname === 'solutions.html') {
