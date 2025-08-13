@@ -244,21 +244,29 @@
 
 /* --- Custom Scrollbar สำหรับการ์ด --- */
 .card-back::-webkit-scrollbar {
-    width: 6px;
+    width: 8px; /* เพิ่มความกว้าง scrollbar ใน mobile */
 }
 
 .card-back::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
-    border-radius: 3px;
+    border-radius: 4px;
+    margin: 8px 0; /* เพิ่ม margin */
 }
 
 .card-back::-webkit-scrollbar-thumb {
     background: var(--primary-blue);
-    border-radius: 3px;
+    border-radius: 4px;
+    min-height: 40px; /* เพิ่มความสูงขั้นต่ำของ thumb */
 }
 
 .card-back::-webkit-scrollbar-thumb:hover {
     background: var(--dark-blue);
+}
+
+/* สำหรับ Firefox */
+.card-back {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-blue) rgba(0, 0, 0, 0.1);
 }
 
 /* --- Responsive Adjustments --- */
@@ -273,28 +281,51 @@
 @media (max-width: 768px) {
     .flipping-card {
         width: 95vw;
-        height: 70vh; /* เปลี่ยนเป็น viewport height แทน min-height */
-        min-height: 450px;
-        max-height: 600px; /* เพิ่มความสูงสูงสุด */
+        height: 85vh; /* เพิ่มความสูงจาก 70vh เป็น 85vh */
+        min-height: 500px; /* เพิ่มจาก 450px */
+        max-height: none; /* เอา max-height ออกให้ขยายได้ตามเนื้อหา */
+    }
+    
+    .card-inner {
+        height: 100%;
     }
     
     .card-front, .card-back {
-        padding: 1rem;
+        padding: 1.5rem; /* เพิ่ม padding */
         height: 100%;
     }
     
     .card-back {
         /* เพิ่มการจัดการ scroll ที่ดีขึ้นในมือถือ */
-        overflow-y: auto;
+        overflow-y: scroll; /* เปลี่ยนจาก auto เป็น scroll เพื่อบังคับให้มี scrollbar */
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch; /* สำหรับ iOS smooth scrolling */
+        scrollbar-width: thin; /* สำหรับ Firefox */
     }
     
     .card-back-grid {
         grid-template-columns: 1fr;
-        gap: 1.5rem; /* ลด gap ในมือถือ */
+        gap: 1rem; /* ลด gap จาก 1.5rem */
         height: auto;
-        min-height: unset;
+        min-height: calc(100% - 3rem); /* ปรับ min-height ให้เหมาะสมกับ padding */
+        padding-bottom: 1rem; /* เพิ่ม padding ด้านล่าง */
+    }
+    
+    /* ปรับ back-profile-header ให้แสดงในแนวตั้งใน mobile */
+    .back-profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .back-profile-name {
+        font-size: 1.1rem; /* ลดขนาดให้เหมาะสมใน mobile */
+    }
+    
+    .back-profile-email {
+        justify-content: center;
+        font-size: 0.8rem;
     }
     
     /* ปรับขนาดรูปโปรไฟล์ในมือถือ */
@@ -304,39 +335,46 @@
     }
     
     .back-profile-picture {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .back-profile-name {
-        font-size: 1.2rem;
+        width: 70px; /* เพิ่มขนาดเล็กน้อย */
+        height: 70px;
     }
     
     /* ปรับขนาดข้อความในมือถือ */
     .section-title {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .info-section {
+        margin-top: 1rem; /* ลด margin */
     }
     
     .info-section p, .tech-list li {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         line-height: 1.4;
+        margin-bottom: 0.4rem;
     }
     
     /* ปรับ social links ในมือถือ */
+    .social-links {
+        margin-top: 0.75rem;
+    }
+    
     .social-links a {
-        font-size: 1.5rem;
-        margin: 0 0.5rem;
+        font-size: 1.3rem;
+        margin: 0 0.4rem;
     }
     
     /* ปรับ company logos ในมือถือ */
     .company-logos {
-        gap: 1rem;
+        gap: 0.75rem;
         justify-content: center;
+        margin-top: 0.75rem;
     }
     
     .company-logos img {
-        height: 25px;
-        max-width: 80px;
+        height: 20px;
+        max-width: 70px;
     }
 }
 
@@ -344,17 +382,18 @@
 @media (max-width: 480px) {
     .flipping-card {
         width: 98vw;
-        height: 80vh;
-        min-height: 400px;
-        max-height: 500px;
+        height: 90vh; /* เพิ่มความสูงใน mobile เล็ก */
+        min-height: 500px;
+        max-height: none;
     }
     
     .card-front, .card-back {
-        padding: 0.75rem;
+        padding: 1rem;
     }
     
     .card-back-grid {
-        gap: 1rem;
+        gap: 0.75rem;
+        padding-bottom: 1.5rem;
     }
     
     .profile-picture {
@@ -363,6 +402,58 @@
     }
     
     .profile-name {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
+    }
+    
+    .back-profile-picture {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .back-profile-name {
+        font-size: 1rem;
+    }
+    
+    .section-title {
+        font-size: 0.9rem;
+    }
+    
+    .info-section p, .tech-list li {
+        font-size: 0.75rem;
+    }
+    
+    .social-links a {
+        font-size: 1.2rem;
+        margin: 0 0.3rem;
+    }
+}
+
+/* --- สำหรับ iPad และแท็บเล็ต --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .flipping-card {
+        width: 90vw;
+        height: 75vh;
+        min-height: 550px;
+        max-height: none;
+    }
+    
+    .card-back {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .card-back-grid {
+        gap: 1.5rem;
+        padding-bottom: 1rem;
+    }
+    
+    .profile-picture {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .back-profile-picture {
+        width: 75px;
+        height: 75px;
     }
 }
