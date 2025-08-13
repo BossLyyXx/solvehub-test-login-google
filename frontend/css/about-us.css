@@ -31,7 +31,8 @@
     perspective: 1500px;
     cursor: pointer;
     width: 700px;
-    height: 450px; 
+    /* EDIT: Changed height to min-height */
+    min-height: 450px; 
 }
 
 .card-inner {
@@ -144,12 +145,11 @@
 .social-links {
     margin-top: 1rem;
     padding-top: 0;
-    /* EDIT: Center the icons */
     text-align: center; 
 }
 
 .social-links a {
-    font-size: 1.8rem; /* Make icons slightly larger */
+    font-size: 1.8rem;
     margin: 0 0.75rem;
     transition: transform 0.2s ease;
     display: inline-block;
@@ -159,7 +159,6 @@
     transform: scale(1.1);
 }
 
-/* EDIT: Add specific colors for each social icon */
 .social-links a[title="Instagram"] i {
     background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%,#d6249f 60%,#285AEB 90%);
     -webkit-background-clip: text;
@@ -222,24 +221,33 @@
 /* --- Team Grid Layout --- */
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(2, 700px);
+    grid-template-columns: repeat(2, 1fr);
     gap: 2.5rem;
     justify-content: center; 
     padding-top: 2rem;
     border-top: 1px solid var(--border-color);
+    max-width: 1500px;
+    margin: 0 auto;
 }
+
+.team-grid .flipping-card {
+    width: 100%;
+}
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 1500px) {
     .team-grid {
         grid-template-columns: 1fr;
         justify-items: center; 
+        max-width: 700px;
     }
 }
 
 @media (max-width: 768px) {
     .flipping-card {
         width: 90vw;
+        /* EDIT: Remove fixed height from mobile view as well */
         height: auto;
         min-height: 500px;
     }
