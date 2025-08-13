@@ -31,8 +31,7 @@
     perspective: 1500px;
     cursor: pointer;
     width: 700px;
-    /* EDIT: Changed height to min-height */
-    min-height: 450px; 
+    min-height: 450px;
 }
 
 .card-inner {
@@ -58,11 +57,13 @@
     border-radius: var(--border-radius-lg);
     box-shadow: var(--card-shadow);
     border: 1px solid var(--border-color);
-    padding: 2.5rem;
+    padding: 1.5rem; /* ลด padding จาก 2.5rem เป็น 1.5rem */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    word-wrap: break-word; /* เพิ่มจัดการคำยาว */
+    overflow-wrap: break-word; /* เพิ่มจัดการคำยาว */
 }
 
 .card-back {
@@ -179,7 +180,6 @@
     color: var(--dark-blue);
 }
 
-
 .info-section {
     margin-top: 1.5rem;
 }
@@ -200,6 +200,8 @@
     font-size: 0.9rem;
     color: var(--text-secondary);
     margin-bottom: 0.5rem;
+    word-wrap: break-word; /* เพิ่มจัดการคำยาว */
+    overflow-wrap: break-word; /* เพิ่มจัดการคำยาว */
 }
 .tech-list {
     list-style: none;
@@ -234,7 +236,6 @@
     width: 100%;
 }
 
-
 /* --- Responsive Adjustments --- */
 @media (max-width: 1500px) {
     .team-grid {
@@ -246,12 +247,14 @@
 
 @media (max-width: 768px) {
     .flipping-card {
-        width: 90vw;
-        /* EDIT: Remove fixed height from mobile view as well */
+        width: 95vw; /* เพิ่มความกว้างให้เต็มเกือบหน้าจอ */
         height: auto;
-        min-height: 500px;
+        min-height: 450px; /* ลด min-height จาก 500px เหลือ 450px */
     }
     .card-back-grid {
         grid-template-columns: 1fr;
+    }
+    .card-front, .card-back {
+        padding: 1rem; /* ลด padding เพิ่มเติมในมือถือ */
     }
 }
